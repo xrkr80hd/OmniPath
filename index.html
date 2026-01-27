@@ -1,19 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>OmniPath</title>
-    <link rel="stylesheet" href="styles/main.css" />
-  </head>
-  <body>
-    <div id="app">
-      <div class="container">
-        <h1>OmniPath</h1>
-        <p>Persistent shell is ready.</p>
-      </div>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmniPath</title>
+  <link rel="stylesheet" href="styles/main.css" />
+ </head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="app-title">OmniPath</div>
+      <nav class="app-nav" aria-label="Primary">
+        <a href="#title" data-route="title">Title</a>
+        <a href="#adventure-select" data-route="adventure-select">Adventure Select</a>
+        <a href="#session-zero" data-route="session-zero">Session Zero</a>
+        <a href="#party" data-route="party">Party</a>
+        <a href="#party-summary" data-route="party-summary">Party Summary</a>
+        <a href="#maps" data-route="maps">Maps</a>
+        <a href="#assets" data-route="assets">Assets</a>
+        <a href="#save-load" data-route="save-load">Save / Load</a>
+        <a href="#settings" data-route="settings">Settings</a>
+      </nav>
+    </header>
 
-    <script src="scripts/app.js"></script>
-  </body>
+    <main id="viewport" class="app-viewport" aria-live="polite"></main>
+  </div>
+
+  <script type="module" src="scripts/app.js"></script>
+</body>
 </html>
