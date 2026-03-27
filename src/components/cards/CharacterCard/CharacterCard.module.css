@@ -1,0 +1,380 @@
+.root {
+  width: 100%;
+}
+
+.accordion {
+  display: block;
+}
+
+.accordion[hidden] {
+  display: none;
+}
+
+.root :global(.character-card__frame) {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid #d8dee7;
+  background: #ffffff;
+  box-shadow: 0 22px 48px rgba(15, 23, 42, 0.12);
+}
+
+.root :global(.character-card__portrait) {
+  position: relative;
+  min-height: 100%;
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.18), rgba(15, 23, 42, 0.58)),
+    linear-gradient(135deg, #6b7280 0%, #334155 46%, #0f172a 100%);
+}
+
+.root :global(.character-card__portrait)::before {
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  content: "";
+}
+
+.root :global(.character-card__portrait-mark) {
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  height: 56px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.root :global(.character-card__body) {
+  display: grid;
+  gap: 0;
+}
+
+.root :global(.character-card__heading-anchor) {
+  display: block;
+}
+
+.root :global(.character-card__header),
+.root :global(.character-card__meta),
+.root :global(.character-card__accordion) {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.root :global(.character-card__header) {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 28px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid #d8dee7;
+}
+
+.root :global(.character-card__title-block) {
+  min-width: 0;
+}
+
+.root :global(.character-card__eyebrow) {
+  margin: 0 0 10px;
+  color: #526071;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.root :global(.character-card__name) {
+  margin: 0;
+  color: #101828;
+  font-size: clamp(2rem, 4vw, 2.85rem);
+  font-weight: 800;
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+}
+
+.root :global(.character-card__role) {
+  margin: 12px 0 0;
+  color: #526071;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.root :global(.character-card__header-tools) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.root :global(.character-card__badge) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid #b9c4d1;
+  background: #f5f7fa;
+  color: #101828;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.root :global(.character-card__badge--system) {
+  border-color: rgba(15, 118, 110, 0.28);
+  background: #d7f1ee;
+  color: #115e59;
+}
+
+.root :global(.character-card__toggle) {
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid #111827;
+  background: #ffffff;
+  color: #111827;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.root :global(.character-card__toggle:hover) {
+  background: #f8fafc;
+}
+
+.root :global(.character-card__toggle:focus-visible),
+.root :global(.character-card__action:focus-visible) {
+  outline: 2px solid #0f766e;
+  outline-offset: 2px;
+}
+
+.root :global(.character-card__meta) {
+  display: grid;
+  gap: 18px;
+  padding-top: 22px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #d8dee7;
+}
+
+.root :global(.character-card__identity-row) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.root :global(.character-card__identity-item) {
+  display: grid;
+  gap: 6px;
+  padding: 16px 18px;
+  border: 1px solid #d8dee7;
+  background: #fbfcfd;
+}
+
+.root :global(.character-card__identity-label) {
+  color: #526071;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.root :global(.character-card__identity-value) {
+  color: #101828;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.root :global(.character-card__badges) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.root :global(.character-card__accordion) {
+  padding-top: 24px;
+  padding-bottom: 32px;
+}
+
+.root :global(.character-card__expanded-panel) {
+  display: grid;
+  gap: 22px;
+  border: 1px solid #d8dee7;
+  background: linear-gradient(180deg, #ffffff 0%, #f9fbfc 100%);
+  padding: 24px;
+}
+
+.root :global(.character-card__stats) {
+  display: grid;
+  gap: 22px;
+}
+
+.root :global(.character-card__stats-header) {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: baseline;
+}
+
+.root :global(.character-card__stats-title) {
+  margin: 0;
+  color: #101828;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.root :global(.character-card__stats-note) {
+  margin: 0;
+  color: #526071;
+  font-size: 0.88rem;
+}
+
+.root :global(.character-card__stats-grid) {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+}
+
+.root :global(.character-card__stat-cell) {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid #d8dee7;
+  background: #ffffff;
+}
+
+.root :global(.character-card__stat-cell dt) {
+  color: #526071;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.root :global(.character-card__stat-cell dd) {
+  margin: 0;
+  color: #101828;
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.root :global(.character-card__actions) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.root :global(.character-card__action) {
+  min-height: 46px;
+  padding: 0 18px;
+  border: 1px solid #111827;
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.root :global(.character-card__action--primary) {
+  background: #111827;
+  color: #f8fafc;
+}
+
+.root :global(.character-card__action--secondary) {
+  background: #ffffff;
+  color: #111827;
+}
+
+.root :global(.character-card__action--primary:hover) {
+  background: #1f2937;
+}
+
+.root :global(.character-card__action--secondary:hover) {
+  background: #f8fafc;
+}
+
+@media (max-width: 860px) {
+  .root :global(.character-card__frame) {
+    grid-template-columns: 1fr;
+  }
+
+  .root :global(.character-card__portrait) {
+    min-height: 280px;
+  }
+
+  .root :global(.character-card__header) {
+    flex-direction: column;
+  }
+
+  .root :global(.character-card__header-tools) {
+    align-items: flex-start;
+  }
+
+  .root :global(.character-card__stats-grid) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .root :global(.character-card__header),
+  .root :global(.character-card__meta),
+  .root :global(.character-card__accordion) {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .root :global(.character-card__header) {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
+  .root :global(.character-card__meta) {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
+  .root :global(.character-card__accordion) {
+    padding-top: 18px;
+    padding-bottom: 20px;
+  }
+
+  .root :global(.character-card__identity-row) {
+    grid-template-columns: 1fr;
+  }
+
+  .root :global(.character-card__expanded-panel) {
+    padding: 18px;
+  }
+
+  .root :global(.character-card__stats-header) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .root :global(.character-card__stats-grid) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .root :global(.character-card__actions) {
+    flex-direction: column;
+  }
+
+  .root :global(.character-card__action),
+  .root :global(.character-card__toggle) {
+    width: 100%;
+  }
+}

@@ -1,0 +1,484 @@
+# Agent Activity Log
+
+This log was reset for reusable template mode on 2026-03-23.
+
+Use this format for new entries:
+
+```md
+- [YYYY-MM-DD] [HH:MM AM/PM]
+  - Agent: [Agent Name]
+  - Task: [short task]
+  - Governing Reference: [source]
+  - Checked: [what reviewed]
+  - Bypass Status: [local-only verified / not applicable / not checked]
+  - Changed: [what changed or "No code changes were made"]
+  - Found: [key finding]
+  - Proven: [evidenced]
+  - Not Proven: [not evidenced]
+  - Deploy Safety: [safe now / not safe yet / not applicable]
+  - Files Touched: [paths or "None"]
+  - Status: [COMPLETE / PARTIAL / BLOCKED / AUDIT_ONLY / VERIFY_ONLY]
+  - Next Step: [safest next move]
+```
+
+- [2026-03-23] [01:23 PM]
+  - Agent: Gabe
+  - Task: Normalize product listing cards to preview-only layout and remove description-driven height drift.
+  - Governing Reference: `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `.github/copilot-instructions.md`
+  - Checked: `web/src/app/page.tsx`, `web/src/app/shop/page.tsx`, `web/src/app/shop/[slug]/page.tsx`, `web/src/components/add-to-cart-button.tsx`, `web/src/components/share-product-button.tsx`, `web/src/app/globals.css`
+  - Changed: Added reusable `ProductListingCard`; updated homepage featured and shop listing grids to use it; removed listing-card description rendering; pinned CTA row to footer area; kept product-detail description on detail page; added listing-safe options to AddToCart/Share components.
+  - Found: Full product description was rendered in featured listing cards on home, causing vertical expansion and uneven card rows.
+  - Proven: Listing cards now render image/title/price with exactly three actions (`View Item`, `Add to Cart`, `Share`) and keep routing/cart/share wiring intact.
+  - Not Proven: Visual QA in a running browser session and Docker runtime check were not executed in this pass.
+  - Files Touched: `mywildrosedesigns_site_clone/web/src/components/product-listing-card.tsx`, `mywildrosedesigns_site_clone/web/src/app/page.tsx`, `mywildrosedesigns_site_clone/web/src/app/shop/page.tsx`, `mywildrosedesigns_site_clone/web/src/components/add-to-cart-button.tsx`, `mywildrosedesigns_site_clone/web/src/components/share-product-button.tsx`, `mywildrosedesigns_site_clone/web/src/app/globals.css`, `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Run local UI check (`npm run dev`) to confirm equalized card heights and button-row stability at desktop/mobile breakpoints.
+
+- [2026-03-23] [01:25 PM]
+  - Agent: Gabe
+  - Task: Validate listing-card refactor compile/lint surface.
+  - Governing Reference: `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `.github/copilot-instructions.md`
+  - Checked: `npx tsc --noEmit`, targeted `npx eslint` on edited listing-card files, full `npm run lint`, attempted `npm run build`
+  - Changed: Fixed missing `product` prop wiring in home/shop mappings for `ProductListingCard`.
+  - Found: Full-repo lint has pre-existing unrelated errors in `src/components/mobile-site-nav.tsx` and `src/components/product-detail-purchase.tsx`; build cleanup step is blocked by policy when removing stale `.next`.
+  - Proven: Edited listing-card files pass targeted eslint and TypeScript typecheck.
+  - Not Proven: Full production build completion and browser/Docker visual QA for this patch.
+  - Files Touched: `mywildrosedesigns_site_clone/web/src/app/page.tsx`, `mywildrosedesigns_site_clone/web/src/app/shop/page.tsx`, `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Run `npm run dev` and visually confirm Featured + Shop cards at desktop/mobile breakpoints.
+
+- [2026-03-23] [01:32 PM]
+  - Agent: Dan
+  - Task: Set the canonical contact phone value for editable site content.
+  - Governing Reference: `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `.github/copilot-instructions.md`
+  - Checked: `web/src/lib/site-content.ts`, `web/src/app/admin/actions.ts`, `web/src/app/admin/content/page.tsx`, `web/src/app/contact/page.tsx`, `web/src/components/site-shell.tsx`, `web/supabase/migrations/*`
+  - Changed: Set the fallback contact phone default and added a targeted migration to write `site-setting::contact_phone` as `3182667346` in `welcome_posts`.
+  - Found: Contact phone is owned by the editable site-content system and rendered from the `welcome_posts` site-setting record, not from page-local UI code.
+  - Proven: The admin content form already writes `contactPhone`; contact page and footer already read the shared contact phone value.
+  - Not Proven: Live hosted data was not directly updated from this shell because Supabase service env is not loaded here.
+  - Files Touched: `mywildrosedesigns_site_clone/web/src/lib/site-content.ts`, `mywildrosedesigns_site_clone/web/supabase/migrations/20260323013200_set_contact_phone_setting.sql`, `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Apply the new migration in the target environment so the stored contact phone field and rendered site content show `3182667346` everywhere.
+
+- [2026-03-23] [01:39 PM]
+  - Agent: Gabe
+  - Task: Restore a local-only sample featured item for homepage card testing.
+  - Governing Reference: `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `.github/copilot-instructions.md`
+  - Checked: `web/src/app/page.tsx`, `web/src/lib/storefront.ts`, `assets/data/products.json`, live local homepage at `http://127.0.0.1:3001/`
+  - Changed: Made storefront sample inventory fallback development-only and added a dedicated `Featured Test Shirt` item to local sample product data.
+  - Found: The homepage featured grid was blank locally because storefront fallback returned no products when live catalog data was unavailable.
+  - Proven: The front page card area depends on storefront product data; development-only sample data can safely restore the card for local testing without becoming production catalog inventory.
+  - Not Proven: Browser verification after this exact fallback adjustment has not yet been rerun.
+  - Files Touched: `mywildrosedesigns_site_clone/web/src/lib/storefront.ts`, `mywildrosedesigns_site_clone/assets/data/products.json`, `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Reload the local homepage, confirm the featured test card renders, then continue staging only validated changes.
+
+- [2026-03-23] [08:27 PM]
+  - Agent: Mo
+  - Task: Define structure for an admin-only floating help and instructions system.
+  - Governing Reference: `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `.github/copilot-instructions.md`, `agents/YOURLOCAL_ENGINE_GPT_COMPANION_UPDATE.md`
+  - Checked: `mywildrosedesigns_site_clone/web/src/app/admin/layout.tsx`, `mywildrosedesigns_site_clone/web/src/app/admin/page.tsx`, `mywildrosedesigns_site_clone/web/src/app/admin/how-to/page.tsx`, `mywildrosedesigns_site_clone/web/src/components/admin-ui-state.tsx`, `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`
+  - Changed: No code changes were made.
+  - Found: The admin area already has a shared shell, existing admin help content, accordion-based sections with persistent open-state keys, and browser-side state storage that can support a global help system without introducing a new public feature area.
+  - Proven: `/admin` uses a shared admin layout and persistent details-state pattern; `/admin/how-to` already exists as a help-oriented route; mobile/admin menu patterns already differ by breakpoint.
+  - Not Proven: Exact preferred admin help copy, final help taxonomy, and whether persistence must survive device changes were not validated with a running browser or direct stakeholder confirmation.
+  - Files Touched: `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Hand off to Ezra for route placement and shell behavior, then to Gabe for interaction/state design before Josh sequences implementation.
+
+- [2026-03-23] [08:31 PM]
+  - Agent: Ezra
+  - Task: Define route placement and desktop/mobile help flow for the admin help system.
+  - Governing Reference: `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `.github/copilot-instructions.md`, `agents/YOURLOCAL_ENGINE_GPT_COMPANION_UPDATE.md`
+  - Checked: `mywildrosedesigns_site_clone/web/src/app/admin/layout.tsx`, `mywildrosedesigns_site_clone/web/src/app/admin/page.tsx`, `mywildrosedesigns_site_clone/web/src/app/admin/how-to/page.tsx`, `mywildrosedesigns_site_clone/web/src/proxy.ts`
+  - Changed: No code changes were made.
+  - Found: The clean route model is one global admin help system mounted in the admin layout with a canonical page route under `/admin/help`, while the floating desktop panel acts as a shell-level surface rather than a separate route.
+  - Proven: All `/admin/:path*` routes are protected by the admin proxy matcher; `/admin/how-to` is already linked from the admin dashboard and can be safely absorbed into a cleaner `/admin/help` route.
+  - Not Proven: Exact launcher placement and final deep-link naming were not validated in a running UI session.
+  - Files Touched: `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Hand off to Dan to lock the persistence contract and confirm MVP does not need new schema.
+
+- [2026-03-23] [08:31 PM]
+  - Agent: Dan
+  - Task: Define backend and persistence boundaries for the admin help system.
+  - Governing Reference: `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `.github/copilot-instructions.md`, `agents/YOURLOCAL_ENGINE_GPT_COMPANION_UPDATE.md`
+  - Checked: `mywildrosedesigns_site_clone/web/src/components/admin-ui-state.tsx`, `mywildrosedesigns_site_clone/web/src/proxy.ts`, `mywildrosedesigns_site_clone/web/src/app/admin/how-to/page.tsx`
+  - Changed: No code changes were made.
+  - Found: MVP persistence should stay browser-local with no new tables, no new server actions, and no new API surface; the help system only needs a small client-state contract for panel state, panel position, and last-viewed section.
+  - Proven: The repo already persists admin UI state in browser storage and already protects admin-only pages via auth middleware.
+  - Not Proven: Cross-device persistence requirements and whether help content will ever need admin-side editing were not evidenced.
+  - Files Touched: `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Hand off to Gabe to translate the agreed shell, states, and storage contract into components and interactions.
+
+- [2026-03-23] [08:31 PM]
+  - Agent: Gabe
+  - Task: Define UI shell and interaction plan for the admin help system.
+  - Governing Reference: `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `.github/copilot-instructions.md`, `agents/YOURLOCAL_ENGINE_GPT_COMPANION_UPDATE.md`
+  - Checked: `mywildrosedesigns_site_clone/web/src/app/admin/layout.tsx`, `mywildrosedesigns_site_clone/web/src/app/admin/page.tsx`, `mywildrosedesigns_site_clone/web/src/components/admin-action-toast.tsx`, `mywildrosedesigns_site_clone/web/src/components/admin-ui-state.tsx`
+  - Changed: No code changes were made.
+  - Found: The feature should be built as a shared `AdminHelpShell` with a desktop floating panel, a persistent launcher, a mobile full-page view, a TOC rail, and accordion sections sourced from one structured content file.
+  - Proven: The current admin uses a layout-level shell and already distinguishes mobile from desktop presentation patterns.
+  - Not Proven: Drag constraints, exact close-button spacing, and motion behavior were not browser-tested.
+  - Files Touched: `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Hand off to Josh to split implementation into dependency-aware tickets.
+
+- [2026-03-23] [08:31 PM]
+  - Agent: Josh
+  - Task: Sequence implementation for the admin help system.
+  - Governing Reference: `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `.github/copilot-instructions.md`, `agents/YOURLOCAL_ENGINE_GPT_COMPANION_UPDATE.md`
+  - Checked: Prior Mo/Ezra/Dan/Gabe planning outputs and current admin shell evidence in `mywildrosedesigns_site_clone/web/src/app/admin/layout.tsx` and `mywildrosedesigns_site_clone/web/src/app/admin/how-to/page.tsx`
+  - Changed: No code changes were made.
+  - Found: The clean execution order is content model first, then route/shell placement, then persistence hooks, then desktop interactions, then mobile page behavior, then QA and copy tightening.
+  - Proven: Existing admin layout and existing help route reduce the amount of new infrastructure needed.
+  - Not Proven: Actual implementation effort and browser edge cases remain unverified until built.
+  - Files Touched: `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Hand off to Mike to audit for overbuild, duplication, and route drift.
+
+- [2026-03-23] [08:31 PM]
+  - Agent: Mike
+  - Task: Audit the planned admin help system for drift and unnecessary complexity.
+  - Governing Reference: `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `.github/copilot-instructions.md`, `agents/YOURLOCAL_ENGINE_GPT_COMPANION_UPDATE.md`
+  - Checked: Prior planning outputs plus `mywildrosedesigns_site_clone/web/src/app/admin/page.tsx`, `mywildrosedesigns_site_clone/web/src/app/admin/how-to/page.tsx`, `mywildrosedesigns_site_clone/web/src/components/admin-ui-state.tsx`
+  - Changed: No code changes were made.
+  - Found: The main risks are duplicate help routes, overcomplicated drag logic, bloated content taxonomy, and prematurely adding database-backed preferences.
+  - Proven: The repo already has overlapping help concepts (`/admin/how-to` plus dashboard links), so consolidation is necessary.
+  - Not Proven: Final scope discipline will hold unless implementation explicitly rejects nice-to-have additions.
+  - Files Touched: `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: AUDIT_ONLY
+  - Next Step: Hand off to Nathan to separate evidenced decisions from remaining assumptions before implementation begins.
+
+- [2026-03-23] [08:31 PM]
+  - Agent: Nathan
+  - Task: Verify the staged admin help system plan against repo evidence and the governing prompt.
+  - Governing Reference: `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `.github/copilot-instructions.md`, `agents/YOURLOCAL_ENGINE_GPT_COMPANION_UPDATE.md`, user request for an admin-only help system
+  - Checked: `mywildrosedesigns_site_clone/web/src/app/admin/layout.tsx`, `mywildrosedesigns_site_clone/web/src/app/admin/page.tsx`, `mywildrosedesigns_site_clone/web/src/app/admin/how-to/page.tsx`, `mywildrosedesigns_site_clone/web/src/components/admin-ui-state.tsx`, `mywildrosedesigns_site_clone/web/src/proxy.ts`
+  - Changed: No code changes were made.
+  - Found: The plan is evidence-backed on protected placement, shared-shell feasibility, accordion compatibility, and browser-local persistence, but remains planning only and does not prove runtime behavior.
+  - Proven: Admin-only routing exists, layout-level mounting exists, existing help content exists, and browser persistence patterns already exist in the repo.
+  - Not Proven: Dragging, mobile restore behavior, close-button visibility across OS/browser combinations, and final content usability remain unverified until implemented and tested.
+  - Files Touched: `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: VERIFY_ONLY
+  - Next Step: Move into implementation only with the constrained MVP scope and a targeted local testing checklist.
+
+- [2026-03-23] [09:19 PM]
+  - Agent: Mo
+  - Task: Lock a hard build rule against random button-cluster navigation in builder docs.
+  - Governing Reference: `.github/copilot-instructions.md`, `agents/AGENTS_QUICK_REFERENCE_GUIDE.md`, user directive for stacked list or accordion navigation
+  - Checked: `.github/copilot-instructions.md`, `agents/AGENTS_QUICK_REFERENCE_GUIDE.md`, `agents/MY_WORKSPACE_GUIDE.md`
+  - Changed: Added a hard navigation rule to the source-of-truth Copilot instructions and reinforced it in the quick reference guide.
+
+- [2026-03-24] [08:13 AM]
+  - Agent: Scribe
+  - Task: Create a shared hard-lock rules document for UI constraints.
+  - Governing Reference: `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `.github/copilot-instructions.md`, user-approved UI lock statements
+  - Checked: `agents/scribe.agent.md`, `agents/gabe.agent.md`, `agents/AGENT_PACKAGE_PORTABILITY.md`, `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`
+  - Changed: Created a dedicated hard-lock rules file and linked it from the shared one-sheet and Gabe's UI rules.
+  - Found: The workspace had shared no-pill guidance, but it did not yet have one dedicated document for hard UI locks such as square boxes, hamburger-only mobile nav, and accordion-only multi-item menu patterns.
+  - Proven: `agents/AGENT_HARD_LOCK_RULES.md` now exists in the shared agents package and is referenced by shared UI guidance.
+  - Not Proven: Full cross-file adoption in every future prompt path was not audited in this pass.
+  - Files Touched: `agents/AGENT_HARD_LOCK_RULES.md`, `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `agents/gabe.agent.md`, `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Reference the new hard-lock file from additional shared docs if you want it surfaced even earlier in the prompt chain.
+  - Found: The workspace already forbids pill and bubble UI, but it did not yet explicitly ban random button-cluster navigation for multiple-item structures.
+  - Proven: The main builder directive now requires stacked lists, structured accordions, or other ordered readable navigation structures instead of scattered button blocks.
+  - Not Proven: Future agents and builders still need to follow the rule consistently during implementation and review.
+  - Files Touched: `.github/copilot-instructions.md`, `agents/AGENTS_QUICK_REFERENCE_GUIDE.md`, `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Apply the same rule during the admin help rebuild so the TOC and grouped navigation follow ordered list or accordion structure.
+
+- [2026-03-23] [10:24 PM]
+  - Agent: Scribe
+  - Task: Create and register the SCRIBE documentation-control agent.
+  - Governing Reference: `.github/copilot-instructions.md`, `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, user-provided SCRIBE role specification
+  - Checked: Existing `agents/*.agent.md` structure, `agents/AGENTS_QUICK_REFERENCE_GUIDE.md`, `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `agents/AGENT_ACTIVITY_LOG.md`
+  - Changed: Created `agents/scribe.agent.md`; added SCRIBE to the quick reference guide and the permissions/actions one-sheet; logged the change.
+  - Found: The workspace had no documentation-control agent even though the system already relies heavily on markdown rules, trigger words, and synchronized references.
+  - Proven: SCRIBE now exists as a user-invocable agent file and is registered in the main agent reference docs.
+  - Not Proven: Hidden mirrors or any external agent registry outside this workspace were not checked or synchronized in this pass.
+  - Files Touched: `agents/scribe.agent.md`, `agents/AGENTS_QUICK_REFERENCE_GUIDE.md`, `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Confirm whether SCRIBE should also maintain a dedicated trigger-word registry file if one will be added later.
+
+- [2026-03-23] [11:20 PM]
+  - Agent: Scribe
+  - Task: Make the agent package transportable across multiple workspaces and add the trigger registry.
+  - Governing Reference: `.github/copilot-instructions.md`, `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, user directive to do items 1, 2, and 3 for transportable multi-workspace agents
+  - Checked: `agents/scribe.agent.md`, `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `agents/AGENTS_QUICK_REFERENCE_GUIDE.md`, `agents/MY_WORKSPACE_GUIDE.md`, `agents/YOURLOCAL_ENGINE_GPT_COMPANION_UPDATE.md`, existing mirror guidance
+  - Changed: Extended SCRIBE for portability work, created a trigger registry, created a package portability guide, updated package references, and logged the transport rules.
+  - Found: The workspace already had a source-tree plus mirror idea, but it did not yet define a portable package contract or a central trigger registry for reuse across workspaces.
+  - Proven: The package docs now define `agents/` as the editable source, `.git/agents/` as the transport mirror, and SCRIBE as the owner of package-level documentation consistency.
+  - Not Proven: The hidden mirror still needs to be synchronized and verified after these file changes.
+  - Files Touched: `agents/scribe.agent.md`, `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `agents/AGENTS_QUICK_REFERENCE_GUIDE.md`, `agents/MY_WORKSPACE_GUIDE.md`, `agents/YOURLOCAL_ENGINE_GPT_COMPANION_UPDATE.md`, `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: PARTIAL
+  - Next Step: Sync `agents/` into `.git/agents/` and verify the mirror contents match the portable package.
+
+- [2026-03-25] [01:13 PM]
+  - Agent: Scribe
+  - Task: Create the shared `accordion 2` snippet and route snippet triggers into the master UI asset library.
+  - Governing Reference: `agents/AGENT_HARD_LOCK_RULES.md`, `agents/AGENT_TRIGGER_REGISTRY.md`, user directive that shared snippets belong in `MASTER/assets/ui` and not in the personal site build
+  - Checked: `MASTER/assets/ui/templates/dropdown-accordion-list.tsx`, `MASTER/assets/ui/templates/dropdown-accordion-list.md`, `MASTER/assets/ui/ui-registry.json`, `agents/scribe.agent.md`, `agents/AGENTS_QUICK_REFERENCE_GUIDE.md`, `agents/AGENT_TRIGGER_REGISTRY.md`
+  - Bypass Status: not applicable
+  - Changed: Added `accordion-2.tsx` and `accordion-2.md` as the screenshot-matched training-index accordion pattern; registered `accordion2` in the UI registry; added `Scribe, snippets` routing language to shared agent docs.
+  - Found: The existing shared dropdown accordion pattern was too generic for the requested training-index example and there was no named `accordion 2` asset yet.
+  - Proven: The shared reusable accordion now exists only in `MASTER/assets/ui/templates`, and the trigger docs now state that shared snippet work routes there instead of into a live site build.
+  - Not Proven: Browser rendering of the new portable snippet was not run in a live app during this pass.
+  - Deploy Safety: safe now
+  - Files Touched: `MASTER/assets/ui/templates/accordion-2.tsx`, `MASTER/assets/ui/templates/accordion-2.md`, `MASTER/assets/ui/ui-registry.json`, `agents/AGENT_TRIGGER_REGISTRY.md`, `agents/scribe.agent.md`, `agents/AGENTS_QUICK_REFERENCE_GUIDE.md`, `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: If you want the old generic dropdown accordion retired or aliased, update any callers to point at `accordion-2` and remove the fallback pattern afterward.
+
+- [2026-03-25] [01:21 PM]
+  - Agent: Scribe
+  - Task: Create a shared clickable training card snippet from the user-provided reference card.
+  - Governing Reference: `agents/AGENT_HARD_LOCK_RULES.md`, `agents/AGENT_TRIGGER_REGISTRY.md`, user request `scribe snippet` with clickable card reference image
+  - Checked: `MASTER/assets/ui/templates/product-card.tsx`, `MASTER/assets/ui/ui-registry.json`, `agents/AGENT_TRIGGER_REGISTRY.md`
+  - Bypass Status: not applicable
+  - Changed: Added `clickable-training-card.tsx` and `clickable-training-card.md`; registered the component and pattern in the master UI registry.
+  - Found: The shared library had a vertical product card, but it did not yet have a wide clickable media card pattern matching the training-course reference or the requested editable fields.
+  - Proven: The master asset library now includes a reusable clickable training card snippet with an editable background image, editable overlay text, editable title/subtitle, and up to six horizontal meta icons.
+  - Not Proven: Browser rendering in a live app was not run during this pass.
+  - Deploy Safety: safe now
+  - Files Touched: `MASTER/assets/ui/templates/clickable-training-card.tsx`, `MASTER/assets/ui/templates/clickable-training-card.md`, `MASTER/assets/ui/ui-registry.json`, `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: If you want a mobile-specific variant next, derive one from this shared card rather than creating a separate unrelated pattern.
+
+- [2026-03-26] [10:17 AM]
+  - Agent: Scribe
+  - Task: Record OmniPath foundation-planning guardrails and findings.
+  - Governing Reference: `OmniPath/OmniPath_VSCode_Handoff_Reset.md`, `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, user instruction to not improvise missing product decisions
+  - Checked: `OmniPath/package.json`, `OmniPath/src/app/page.tsx`, `OmniPath/src/app/layout.tsx`, `OmniPath/tsconfig.json`, `OmniPath/app/components/cards/CharacterCard/CharacterCard.tsx`, `OmniPath/app/components/inventory/InventoryDrawer.tsx`, `OmniPath/src/features/character-card/`, `OmniPath/src/engine/character-card/`, `OmniPath/docs/character-card/character-card-architecture.md`, `/memories/repo/omnipath-workflow.md`
+  - Bypass Status: not applicable
+  - Changed: Added repo-memory guardrails for OmniPath to ask the user instead of improvising missing auth, storage, product, or route decisions.
+  - Found: OmniPath has no Supabase, auth, storage, or Vercel environment foundation yet; landing and route structure remain incomplete while character UI work exists.
+  - Proven: Repo evidence shows default homepage, empty route folders, no Supabase packages/config, and active Character Card plus InventoryDrawer UI modules.
+  - Not Proven: Auth provider details, storage scope, route-protection approach, and database access strategy were not defined in repo evidence.
+  - Deploy Safety: safe now
+  - Files Touched: `agents/AGENT_ACTIVITY_LOG.md`, `/memories/repo/omnipath-workflow.md`
+
+- [2026-03-26] [10:32 AM]
+  - Agent: Scribe
+  - Task: Record OmniPath landing-page click-to-start and sparkle interaction rule.
+  - Governing Reference: user instruction that the landing page will already contain `click to start` and implementation should add only a fantasy sparkle on tap or click
+  - Checked: `OmniPath/docs/omnipath-foundation-plan.md`, `/memories/repo/omnipath-workflow.md`
+  - Bypass Status: not applicable
+  - Changed: Updated the OmniPath foundation plan and repo memory with the locked opening interaction rule for the landing page.
+  - Found: The landing-page opening interaction should remain minimal, use the user's provided prompt, and rely on a fantasy-style sparkle response instead of extra onboarding UI.
+  - Proven: The written plan now captures the click-to-start plus sparkle rule as a project requirement.
+  - Not Proven: Final video playback behavior after the interaction still remains undefined.
+  - Deploy Safety: safe now
+  - Files Touched: `OmniPath/docs/omnipath-foundation-plan.md`, `agents/AGENT_ACTIVITY_LOG.md`, `/memories/repo/omnipath-workflow.md`
+  - Status: COMPLETE
+  - Next Step: Use this rule when building the landing-page scaffold and keep the first interaction layer minimal.
+  - Status: COMPLETE
+  - Next Step: Get the user's decisions on auth method, storage scope, protected-route strategy, and data-access approach before implementation planning advances.
+
+- [2026-03-26] [10:17 AM]
+  - Agent: Scribe
+  - Task: Record locked OmniPath MVP foundation decisions and plan document.
+  - Governing Reference: `OmniPath/OmniPath_VSCode_Handoff_Reset.md`, user answers confirming Supabase Auth, Supabase Storage, middleware plus server-side checks, and Session Zero create-new-character MVP flow
+  - Checked: `OmniPath/docs/`, `OmniPath/OmniPath_VSCode_Handoff_Reset.md`, `/memories/repo/omnipath-workflow.md`
+  - Bypass Status: not applicable
+  - Changed: Added `OmniPath/docs/omnipath-foundation-plan.md`; updated repo memory with locked MVP foundation decisions and deferred-scope notes.
+  - Found: OmniPath now has a written MVP foundation source of truth covering auth, storage, protected routes, route scope, repo-structure direction, and build order.
+  - Proven: The repo now contains a concrete foundation plan document and matching repo-memory rules aligned to the user's decisions.
+  - Not Proven: No code implementation for auth, storage, landing page, or route protection has been started in this pass.
+  - Deploy Safety: safe now
+  - Files Touched: `OmniPath/docs/omnipath-foundation-plan.md`, `agents/AGENT_ACTIVITY_LOG.md`, `/memories/repo/omnipath-workflow.md`
+  - Status: COMPLETE
+  - Next Step: Start the first implementation phase by normalizing repo structure and replacing the default landing page, then layer in Supabase auth and protected-route scaffolding.
+
+- [2026-03-26] [10:30 AM]
+  - Agent: Scribe
+  - Task: Record OmniPath landing-page rotating-video requirement.
+  - Governing Reference: user instruction that the landing page will use a rotating series of loaded videos
+  - Checked: `OmniPath/docs/omnipath-foundation-plan.md`, `/memories/repo/omnipath-workflow.md`
+  - Bypass Status: not applicable
+  - Changed: Added landing-page media direction to the OmniPath foundation plan and repo memory.
+  - Found: The landing page now has an explicit requirement for a rotating series of user-supplied videos instead of a static single hero asset.
+  - Proven: The written plan now captures the rotating-video requirement and explicitly marks playback details as unresolved until the user defines them.
+  - Not Proven: Autoplay, audio, controls, rotation timing, mobile fallback, and final asset-source rules are not yet defined.
+  - Deploy Safety: safe now
+  - Files Touched: `OmniPath/docs/omnipath-foundation-plan.md`, `agents/AGENT_ACTIVITY_LOG.md`, `/memories/repo/omnipath-workflow.md`
+  - Status: COMPLETE
+  - Next Step: Use this media rule when planning the landing page and ask the user for the unresolved playback details before implementing the video system.
+
+- [2026-03-26] [10:41 AM]
+  - Agent: Gabe
+  - Task: Build the local OmniPath foundation up to the Supabase and Vercel boundary.
+  - Governing Reference: `OmniPath/OmniPath_VSCode_Handoff_Reset.md`, `OmniPath/docs/omnipath-foundation-plan.md`, user instruction to build until external integration begins
+  - Checked: `OmniPath/src/app/*`, `OmniPath/src/components/*`, `OmniPath/tsconfig.json`, local Next 16 docs under `node_modules/next/dist/docs/01-app/*`
+  - Bypass Status: not applicable
+  - Changed: Migrated live UI into `src/components`; replaced the default homepage with a real OmniPath landing scaffold; added click-to-start sparkle interaction; created local route placeholders for login, profile, campaigns, campaign hub, lobby, Session Zero, and character sheet; added shared site header, footer, and placeholder layout components; removed old empty route and component directories.
+  - Found: The repo could safely establish structure, navigation, landing flow, and page ownership before touching Supabase Auth, Supabase Storage, or Vercel configuration.
+  - Proven: `src/app` now contains the active route tree, `src/components` now contains the live reusable UI, editor errors returned clean, and `tsc --noEmit` completed without reported output.
+  - Not Proven: Browser rendering, final video playback behavior, auth state, database-backed data, and deployment wiring remain unverified or intentionally unimplemented.
+  - Deploy Safety: safe now
+  - Files Touched: `OmniPath/src/app/layout.tsx`, `OmniPath/src/app/page.tsx`, `OmniPath/src/app/globals.css`, `OmniPath/src/app/login/page.tsx`, `OmniPath/src/app/profile/page.tsx`, `OmniPath/src/app/campaigns/page.tsx`, `OmniPath/src/app/campaigns/[campaignId]/page.tsx`, `OmniPath/src/app/campaigns/[campaignId]/lobby/page.tsx`, `OmniPath/src/app/campaigns/[campaignId]/session-zero/page.tsx`, `OmniPath/src/app/characters/[characterId]/page.tsx`, `OmniPath/src/components/layout/SiteHeader.tsx`, `OmniPath/src/components/layout/SiteFooter.tsx`, `OmniPath/src/components/layout/RoutePlaceholder.tsx`, `OmniPath/src/components/landing/VideoHero.tsx`, `OmniPath/src/components/landing/SparkleEffect.tsx`, `OmniPath/src/components/landing/SparkleEffect.module.css`, `OmniPath/src/components/cards/CharacterCard/index.ts`, `agents/AGENT_ACTIVITY_LOG.md`
+- [2026-03-26] [12:24 PM]
+  - Agent: Gabe
+  - Task: Reset OmniPath guardrails to game-interface mode and build page 1 as the title screen.
+  - Governing Reference: `OmniPath/OmniPath_VSCode_Handoff_Reset.md`, `OmniPath/docs/omnipath-foundation-plan.md`, user instruction to treat OmniPath as a web-presented game interface and build only the first page
+  - Checked: `OmniPath/src/app/page.tsx`, `OmniPath/src/app/layout.tsx`, `OmniPath/src/app/globals.css`, `OmniPath/src/components/landing/SparkleEffect.tsx`, `OmniPath/src/components/landing/VideoHero.tsx`, `OmniPath/src/components/layout/SiteHeader.tsx`, `/memories/repo/omnipath-workflow.md`
+  - Bypass Status: not applicable
+  - Changed: Updated the OmniPath foundation and handoff docs with the game-interface correction; updated repo memory with the page-by-page lock; replaced the homepage with a dedicated `TitleScreen`; added title-screen styling and reused the sparkle interaction.
+  - Found: The existing homepage still behaved like a campaign-platform landing and needed to be narrowed to a single title-screen interaction before any second screen is built.
+  - Proven: `npm run build` completed successfully after the title-screen change, and page 1 now renders from a dedicated screen component instead of the previous website-style landing composition.
+  - Not Proven: Browser-level visual QA and page-2 transition behavior were not implemented in this pass.
+  - Deploy Safety: safe now
+  - Files Touched: `OmniPath/docs/omnipath-foundation-plan.md`, `OmniPath/OmniPath_VSCode_Handoff_Reset.md`, `OmniPath/src/app/layout.tsx`, `OmniPath/src/app/page.tsx`, `OmniPath/src/components/screens/TitleScreen.tsx`, `OmniPath/src/components/screens/TitleScreen.module.css`, `agents/AGENT_ACTIVITY_LOG.md`, `/memories/repo/omnipath-workflow.md`
+  - Status: COMPLETE
+  - Next Step: Review and approve the title screen, then define page 2 before extending the screen flow.
+  - Status: COMPLETE
+  - Next Step: Pause here and begin the next phase only when Supabase and Vercel setup is ready to be implemented.
+
+- [2026-03-26] [01:09 PM]
+  - Agent: Gabe
+  - Task: Build page 2 as the first game-interface hub after the title screen.
+  - Governing Reference: `OmniPath/OmniPath_VSCode_Handoff_Reset.md`, `OmniPath/docs/omnipath-foundation-plan.md`, user approval to continue with the next page after the landing screen
+  - Checked: `OmniPath/src/app/page.tsx`, `OmniPath/src/components/screens/TitleScreen.tsx`, `OmniPath/src/components/cards/CharacterCard/CharacterCard.tsx`, `OmniPath/src/components/cards/CharacterCard/CharacterCard.types.ts`, `OmniPath/src/app/campaigns/page.tsx`, `OmniPath/src/components/layout/RoutePlaceholder.tsx`, local Next 16 docs under `node_modules/next/dist/docs/01-app/01-getting-started/*`, `/memories/repo/omnipath-workflow.md`
+  - Bypass Status: not applicable
+  - Changed: Replaced the home route with a client-managed screen flow; updated `TitleScreen` so the entry action advances into page 2; created `HomeFlow` and `GameInterfaceScreen`; staged branch links and demo roster data inside the new game-interface hub; updated stale page-1-only planning text and repo memory to stop before page 3.
+  - Found: The right next move after the approved landing screen was not another placeholder route but a real page-2 hub that reconnects the existing character module to the top-level flow.
+  - Proven: The homepage can now progress from the title screen into a dedicated game-interface screen that exposes branch links and live `CharacterCard` surfaces inside Phase 1.
+  - Not Proven: Browser-level mobile QA and any page-3 branch behavior remain unverified and intentionally unbuilt in this pass.
+  - Deploy Safety: safe now
+  - Files Touched: `OmniPath/src/app/page.tsx`, `OmniPath/src/components/screens/TitleScreen.tsx`, `OmniPath/src/components/screens/HomeFlow.tsx`, `OmniPath/src/components/screens/GameInterfaceScreen.tsx`, `OmniPath/src/components/screens/GameInterfaceScreen.module.css`, `OmniPath/docs/omnipath-foundation-plan.md`, `agents/AGENT_ACTIVITY_LOG.md`, `/memories/repo/omnipath-workflow.md`
+  - Status: COMPLETE
+  - Next Step: Review page 2 and define exactly which page-3 branch should be built next.
+
+- [2026-03-26] [03:12 PM]
+  - Agent: Gabe
+  - Task: Tune the title-screen typography and entry treatment to better match the staged title-sequence aesthetics.
+  - Governing Reference: user request to inspect the 19 title-sequence assets and make the title-screen buttons and low-profile prompt better match the sci-fi, lovecraft, and steampunk direction
+  - Checked: `OmniPath/public/omnipath/screens/title-sequence/*`, `OmniPath/src/components/screens/TitleScreen.tsx`, `OmniPath/src/components/screens/TitleScreen.module.css`, `OmniPath/src/components/screens/HomeFlow.tsx`
+  - Bypass Status: not applicable
+  - Changed: Added display and interface font pairing for the title screen; retuned the entry button styling toward a hybrid occult-mechanical look; changed the low-profile footer prompt to `Click anywhere to begin.`; made the title screen itself clickable while preserving the central entry button.
+  - Found: The asset set spans multiple aesthetics, so a hybrid serif-plus-tech treatment fits better than the previous plain modern button styling.
+  - Proven: The title screen now carries a more stylized type system and a lower-profile bottom prompt while keeping the staged flow intact.
+  - Not Proven: Final visual fit against the actual image sequence is not yet confirmed until those assets are wired into the screen.
+  - Deploy Safety: safe now
+  - Files Touched: `OmniPath/src/components/screens/TitleScreen.tsx`, `OmniPath/src/components/screens/TitleScreen.module.css`, `OmniPath/src/components/screens/HomeFlow.tsx`, `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Wire the 19 staged title assets into the landing sequence and validate the new typography against the real media.
+
+- [2026-03-26] [08:56 PM]
+  - Agent: Nathan
+  - Task: Verify and inventory the single prototype folder `OMNIPATH_git_online`.
+  - Governing Reference: User instruction to verify only `/Users/xrkr80hd/Desktop/master_folder/OMNIPATH_git_online` and inventory what is there.
+  - Checked: `/Users/xrkr80hd/Desktop/master_folder/OMNIPATH_git_online`, `README.md`, `index.html`, `scripts/app.js`, `styles/main.css`, `screens/*.html`, `Omni Path Screen + Graphics/`, `Omni Path Title Screen/`, `Omni Path World Map/`, `OP_BG_Screens/`, `git status --short --branch`
+  - Bypass Status: not applicable
+  - Changed: No code changes were made. Added this verification inventory record only.
+  - Found: The folder is a small vanilla HTML/CSS/JS prototype repo. Top level contents verified: `.gitignore`, `README.md`, `index.html`, `OmniPath.code-workspace`, `screens/`, `scripts/`, `styles/`, `Omni Path Screen + Graphics/`, `Omni Path Title Screen/`, `Omni Path World Map/`, `OP_BG_Screens/`, and a nested `OmniPath/` folder with only `.gitignore`. The app shell is `index.html`, the router is `scripts/app.js`, the stylesheet is `styles/main.css`, and there are 9 screen templates in `screens/`: `title`, `adventure-select`, `session-zero`, `party`, `party-summary`, `maps`, `assets`, `save-load`, `settings`.
+  - Proven: `Omni Path Screen + Graphics/` contains 10 screen/mockup PNGs plus a `logo/` folder with 3 logo assets. `Omni Path Title Screen/title screen/` contains 7 title-background images. `Omni Path World Map/` contains 2 world-map images. `OP_BG_Screens/` contains 12 non-title background images. `scripts/app.js` confirms random title backgrounds on the title route and random screen backgrounds on all other routes, plus hash-based loading of the 9 screen templates.
+  - Not Proven: The repo is not fully clean relative to its current script paths. `git status` shows tracked deletions under `OmniPath BG/` and an untracked `OP_BG_Screens/` folder, while `scripts/app.js` still points screen backgrounds at `OmniPath BG/...`. Browser execution was not run in this pass, so live background loading was not verified.
+  - Deploy Safety: not applicable
+  - Files Touched: `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: VERIFY_ONLY
+  - Next Step: Use this inventory to decide what to keep, and if you want the prototype runnable again later, reconcile `scripts/app.js` background paths with the actual `OP_BG_Screens/` folder.
+
+- [2026-03-26] [10:28 PM]
+  - Agent: Scribe
+  - Task: Log locked OmniPath page-flow and canonical save-state decisions after interrupted prior request.
+  - Governing Reference: user instruction to lock page 2 choices, lock load-character campaign flow, and record canonical save plus mid-campaign leave behavior.
+  - Checked: `OmniPath/src/components/screens/HomeFlow.tsx`, `OmniPath/src/components/screens/GameInterfaceScreen.tsx`, `OmniPath/src/components/screens/CharacterBranchScreen.tsx`, `OmniPath/docs/omnipath-foundation-plan.md`, prior chat-provided save-model notes.
+  - Bypass Status: not applicable
+  - Changed: Recorded and aligned the canonical decisions in docs and screen flow: page 2 now centers on `New Character` and locked `Load Character`; page 3 load path now requires selecting character before loading into a campaign; added canonical save-state model (`Character`, `Campaign`, `Party`, `CharacterCampaignState`) and absence fallback rule (last safe hub plus temporary fatigued return state).
+  - Found: The previous run had planning decisions in conversation but they were not fully preserved in the shared activity log after requests were exhausted.
+  - Proven: Repo docs now explicitly capture the screen lock and save semantics; live page flow components now enforce the load-character to campaign-selection path based on selected character.
+  - Not Proven: Backend persistence tables and fatigued-state mechanics are still design-level rules only until Phase 2 data implementation begins.
+  - Deploy Safety: safe now
+  - Files Touched: `OmniPath/src/components/screens/HomeFlow.tsx`, `OmniPath/src/components/screens/GameInterfaceScreen.tsx`, `OmniPath/src/components/screens/CharacterBranchScreen.tsx`, `OmniPath/src/components/screens/CharacterBranchScreen.module.css`, `OmniPath/docs/omnipath-foundation-plan.md`, `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Keep the new page-2/page-3 lock in place and implement Phase 2 persistence tables using `CharacterCampaignState` keys before enabling durable save/load.
+
+- [2026-03-26] [10:56 PM]
+  - Agent: Scribe
+  - Task: Add strict OmniPath no-bypass execution guardrails before further work.
+  - Governing Reference: user instruction to write OmniPath guardrails now and prevent further bypass behavior.
+  - Checked: `agents/AGENT_HARD_LOCK_RULES.md`, `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, current OmniPath process issues from active chat.
+  - Bypass Status: not applicable
+  - Changed: Added workspace-specific OmniPath hard locks: Mo plans only, required handoff sequence, no Docker refresh before approved visual checkpoint, no push/commit/merge/deploy without explicit authorization, read-only legacy prototype paths, and explicit no-bypass behavior for stop/hold directives.
+  - Found: Existing global workflow rules were present, but OmniPath-specific enforcement language needed to be explicit and non-optional to prevent drift.
+  - Proven: Guardrails now codify the OmniPath process gates directly in both hard-lock and permissions control files.
+  - Not Proven: Runtime adherence depends on future execution following these locks every pass.
+  - Deploy Safety: safe now
+  - Files Touched: `agents/AGENT_HARD_LOCK_RULES.md`, `agents/AGENT_PERMISSIONS_ACTIONS_ONE_SHEET.md`, `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Apply these locks as mandatory preflight checks before any OmniPath planning, coding, or Docker actions.
+
+- [2026-03-26] [11:44 PM]
+  - Agent: Gabe
+  - Task: Implement the new OmniPath primary screen flow (page2 -> page2a/page2b or page3) and move screen-flow backgrounds.
+  - Governing Reference: user instruction for HomeFlow/page2/page2a/page2b/page3 lock, character-state ownership in parent, and moved background folder.
+  - Checked: `OmniPath/src/components/screens/HomeFlow.tsx`, `OmniPath/src/components/screens/GameInterfaceScreen.tsx`, `OmniPath/src/components/screens/GameInterfaceScreen.module.css`, `OmniPath/src/components/screens/screenFlowData.ts`, `OmniPath/src/components/screens/Page2aLoadCharacterScreen.tsx`, `OmniPath/src/components/screens/Page2aLoadCharacterScreen.module.css`, `OmniPath/src/components/screens/Page2bLoadCampaignScreen.tsx`, `OmniPath/src/components/screens/Page2bLoadCampaignScreen.module.css`, `OmniPath/src/components/screens/Page3CreateCharacterScreen.tsx`, `OmniPath/src/components/screens/Page3CreateCharacterScreen.module.css`, `OmniPath/docs/omnipath-foundation-plan.md`, `OmniPath/public/omnipath/assets/backgrounds/screen-flow/*`
+  - Bypass Status: not applicable
+  - Changed: Rewired primary flow to title -> page2 decision -> load split (2a/2b) or create path (page3), removed primary-flow dependency on `CharacterBranchScreen`, lifted `selectedCharacterId` into `HomeFlow`, added campaign links with `?characterId=...`, created shared screen-flow data, and moved/renamed 12 backgrounds from `OP_BG_Screens` into `public/omnipath/assets/backgrounds/screen-flow`.
+  - Found: Prior flow routed through a single `CharacterBranchScreen` and kept selected-character state local to child, which did not match the locked page2a/page2b sequence.
+  - Proven: HomeFlow now owns selected-character state; page2 explicitly offers Create/Load/Options/Return; load flow goes page2a then page2b with campaign links keyed by selected character; page3 background sequence references the moved folder.
+  - Not Proven: Browser visual QA for all screens and final options-screen implementation are still pending.
+  - Deploy Safety: safe now
+  - Files Touched: `OmniPath/src/components/screens/HomeFlow.tsx`, `OmniPath/src/components/screens/GameInterfaceScreen.tsx`, `OmniPath/src/components/screens/GameInterfaceScreen.module.css`, `OmniPath/src/components/screens/screenFlowData.ts`, `OmniPath/src/components/screens/Page2aLoadCharacterScreen.tsx`, `OmniPath/src/components/screens/Page2aLoadCharacterScreen.module.css`, `OmniPath/src/components/screens/Page2bLoadCampaignScreen.tsx`, `OmniPath/src/components/screens/Page2bLoadCampaignScreen.module.css`, `OmniPath/src/components/screens/Page3CreateCharacterScreen.tsx`, `OmniPath/src/components/screens/Page3CreateCharacterScreen.module.css`, `OmniPath/docs/omnipath-foundation-plan.md`, `OmniPath/agents/AGENT_ACTIVITY_LOG.md`, `OmniPath/public/omnipath/assets/backgrounds/screen-flow/*`
+  - Status: COMPLETE
+  - Next Step: Run browser pass on desktop/mobile to tune spacing/text density and verify link flow from page2 through page2b into campaign routes.
+
+- [2026-03-26] [11:52 PM]
+  - Agent: Gabe
+  - Task: Refine page-2 visual direction to page-1 style and enforce randomized `screen-flow` backgrounds across pages 2/2a/2b/3.
+  - Governing Reference: user directive that page 2 should feel like a game menu (not dashboard UI), folder rename/move naming convention lock, and page-flow lock from `docs/omnipath-foundation-plan.md`
+  - Checked: `OmniPath/src/components/screens/GameInterfaceScreen.tsx`, `OmniPath/src/components/screens/GameInterfaceScreen.module.css`, `OmniPath/src/components/screens/Page2aLoadCharacterScreen.tsx`, `OmniPath/src/components/screens/Page2aLoadCharacterScreen.module.css`, `OmniPath/src/components/screens/Page2bLoadCampaignScreen.tsx`, `OmniPath/src/components/screens/Page2bLoadCampaignScreen.module.css`, `OmniPath/src/components/screens/Page3CreateCharacterScreen.tsx`, `OmniPath/src/components/screens/screenFlowData.ts`, `OmniPath/public/omnipath/assets/backgrounds/screen-flow/*`
+  - Bypass Status: not applicable
+  - Changed: Reworked page 2 into a cleaner game-menu interface with four locked actions (`Create New Character`, `Load Character`, `Options`, `Return To Title`), removed dense dashboard blocks from page 2, added shared random-background helper in `screenFlowData`, and wired page 2/2a/2b/3 to use the renamed `public/omnipath/assets/backgrounds/screen-flow` set.
+  - Found: The prior page-2 implementation still read as a command dashboard and was still partially tied to title-sequence backgrounds on load-path screens.
+  - Proven: Lint and production build pass after the visual/background updates, and all flow screens now source backgrounds from the `screen-flow` asset folder with standardized naming.
+  - Not Proven: Final visual approval in the running browser is pending user review.
+  - Deploy Safety: safe now
+  - Files Touched: `OmniPath/src/components/screens/GameInterfaceScreen.tsx`, `OmniPath/src/components/screens/GameInterfaceScreen.module.css`, `OmniPath/src/components/screens/Page2aLoadCharacterScreen.tsx`, `OmniPath/src/components/screens/Page2aLoadCharacterScreen.module.css`, `OmniPath/src/components/screens/Page2bLoadCampaignScreen.tsx`, `OmniPath/src/components/screens/Page2bLoadCampaignScreen.module.css`, `OmniPath/src/components/screens/Page3CreateCharacterScreen.tsx`, `OmniPath/src/components/screens/screenFlowData.ts`, `OmniPath/agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Rebuild Docker and run a browser checkpoint on page 2 before planning/starting the next screen.
+
+- [2026-03-27] [12:06 AM]
+  - Agent: Mo
+  - Task: Plan `Page3CreateCharacterScreen` redesign to match prototype popout and blank-character defaults.
+  - Governing Reference: user instruction to act as Mo planner, match `PROTYPE DRAFT/character creation popout.png`, use solo corner logo, and output sections/placeholders only.
+  - Checked: `src/components/screens/Page3CreateCharacterScreen.tsx`, `src/components/screens/Page3CreateCharacterScreen.module.css`, `PROTYPE DRAFT/character creation popout.png`, `PROTYPE DRAFT/logo/omnipath logo - solo.png`, `agents/mo.agent.md`
+  - Changed: No code changes were made. Logged planning output only.
+  - Found: Current page is a cinematic card-based flow and does not match the prototype's desktop modal, tabbed form layout, left print-options rail, and dual-column content scaffold.
+  - Proven: Prototype requires popout window shell, top-right utility actions, tab strip, left portrait/token/inventory rail, center identity/core/skills table, right prompt-builder and skills list, and bottom action row.
+  - Not Proven: Exact pixel spacing and typography values are not proven until implementation pass and browser QA.
+  - Files Touched: `agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Hand off this section-by-section placeholder plan to Gabe for UI implementation without generated character content.
+
+- [2026-03-27] [12:21 AM]
+  - Agent: Gabe
+  - Task: Redesign Page 3 character creation to match prototype popout style with blank fresh-character state.
+  - Governing Reference: user instruction to match `PROTYPE DRAFT/character creation popout.png`, use corner logo from `PROTYPE DRAFT/logo/omnipath logo - solo.png`, and avoid generating any character values.
+  - Checked: `OmniPath/src/components/screens/Page3CreateCharacterScreen.tsx`, `OmniPath/src/components/screens/Page3CreateCharacterScreen.module.css`, `OmniPath/PROTYPE DRAFT/character creation popout.png`, `OmniPath/public/omnipath/assets/logos/*`
+  - Bypass Status: not applicable
+  - Changed: Replaced page-3 layout with a three-column popout (`Print Options + Portrait/Token`, center `Identity/Core Attributes/Skills`, right `Prompt Builder`), removed in-card logo decoration by title, moved the solo OmniPath logo to page corner, added top nav strip matching reference framing, and kept all fields/selects blank with no generated defaults.
+  - Found: Prior page-3 screen was a cinematic flow panel and did not match the prototype popout composition.
+  - Proven: New page-3 screen now visually follows the popout draft, uses corner logo placement, preserves tab order (`Identity`, `Stats & Skills`, `Inventory`, `Prompt Builder`), and keeps creation data empty on initial load.
+  - Not Proven: Final visual acceptance remains pending user review in browser.
+  - Deploy Safety: safe now
+  - Files Touched: `OmniPath/src/components/screens/Page3CreateCharacterScreen.tsx`, `OmniPath/src/components/screens/Page3CreateCharacterScreen.module.css`, `OmniPath/public/omnipath/assets/logos/omnipath-logo-solo.png`, `OmniPath/agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: User visual checkpoint on page 3 before wiring persistent save/continue behavior.
+
+- [2026-03-27] [01:02 AM]
+  - Agent: Scribe
+  - Task: Record complete session audit for Page 3 prototype-match build, blank-state enforcement, and palette alignment.
+  - Governing Reference: user directives to (1) match `PROTYPE DRAFT/character creation popout.png`, (2) move title-adjacent logo treatment to corner logo using `PROTYPE DRAFT/logo/omnipath logo - solo.png`, (3) keep new character fully blank with no generated values, and (4) align colors to core site theme instead of grayscale placeholder palette.
+  - Checked: `OmniPath/src/components/screens/Page3CreateCharacterScreen.tsx`, `OmniPath/src/components/screens/Page3CreateCharacterScreen.module.css`, `OmniPath/public/omnipath/assets/logos/omnipath-logo-solo.png`, `OmniPath/PROTYPE DRAFT/character creation popout.png`, `OmniPath/agents/AGENT_ACTIVITY_LOG.md`
+  - Bypass Status: not applicable
+  - Changed: Completed Mo + staff planning handoff and Gabe implementation for a prototype-style popout composition (top utility row, tabs, left print-options rail with portrait/token placeholders, center identity/core/skills form scaffold, right prompt-builder scaffold, bottom action bar); moved logo presentation to page corner; added normalized logo asset file name (`omnipath-logo-solo.png`); locked fresh-character defaults so fields/selects remain empty and no generated values are prefilled; disabled generation/save actions by default; then performed follow-up palette harmonization from gray placeholder look to OmniPath dark/gold/blue site theme while preserving the same layout and controls.
+  - Found: Initial redesign pass matched structure but used grayscale placeholder styling; user approved structure and requested site-color alignment, which was then applied without changing the blank-state behavior.
+  - Proven: Screen now keeps tab order (`Identity`, `Stats & Skills`, `Inventory`, `Prompt Builder`), uses corner logo placement instead of title-adjacent mark, keeps creation data blank on first render, and follows a site-consistent palette rather than temporary grayscale placeholders.
+  - Not Proven: Final artistic approval of spacing/typography micro-details remains a user visual checkpoint item.
+  - Deploy Safety: safe now
+  - Files Touched: `OmniPath/src/components/screens/Page3CreateCharacterScreen.tsx`, `OmniPath/src/components/screens/Page3CreateCharacterScreen.module.css`, `OmniPath/public/omnipath/assets/logos/omnipath-logo-solo.png`, `OmniPath/agents/AGENT_ACTIVITY_LOG.md`
+  - Status: COMPLETE
+  - Next Step: Hold this page and collect visual sign-off before wiring persistent create/save workflow behavior.
