@@ -1,11 +1,5 @@
 {
-	"folders": [
-		{
-			"path": ".."
-		},
-		{
-			"name": "OmniPath",
-			"path": "."
-		}
-	]
+  "folders": [
+    { "name": "OmniPath", "path": "." }
+  ]
 }

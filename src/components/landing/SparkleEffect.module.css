@@ -1,0 +1,149 @@
+.root {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.sparkle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(255, 246, 214, 1) 0%, rgba(255, 209, 126, 0.94) 45%, rgba(255, 133, 74, 0) 100%);
+  box-shadow: 0 0 28px rgba(255, 215, 140, 0.55);
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(var(--spark-angle)) translateY(0) scale(0.35);
+  animation: sparkle-burst 650ms ease-out forwards;
+  animation-delay: var(--spark-delay);
+}
+
+.sparkle1 {
+  --spark-angle: 0deg;
+  --spark-distance: 44px;
+  --spark-delay: 0ms;
+  width: 10px;
+  height: 10px;
+}
+
+.sparkle2 {
+  --spark-angle: 24deg;
+  --spark-distance: 60px;
+  --spark-delay: 16ms;
+  width: 8px;
+  height: 8px;
+}
+
+.sparkle3 {
+  --spark-angle: 52deg;
+  --spark-distance: 78px;
+  --spark-delay: 32ms;
+  width: 6px;
+  height: 6px;
+}
+
+.sparkle4 {
+  --spark-angle: 84deg;
+  --spark-distance: 52px;
+  --spark-delay: 48ms;
+  width: 10px;
+  height: 10px;
+}
+
+.sparkle5 {
+  --spark-angle: 110deg;
+  --spark-distance: 72px;
+  --spark-delay: 64ms;
+  width: 8px;
+  height: 8px;
+}
+
+.sparkle6 {
+  --spark-angle: 136deg;
+  --spark-distance: 88px;
+  --spark-delay: 80ms;
+  width: 6px;
+  height: 6px;
+}
+
+.sparkle7 {
+  --spark-angle: 164deg;
+  --spark-distance: 56px;
+  --spark-delay: 96ms;
+  width: 10px;
+  height: 10px;
+}
+
+.sparkle8 {
+  --spark-angle: 196deg;
+  --spark-distance: 70px;
+  --spark-delay: 112ms;
+  width: 8px;
+  height: 8px;
+}
+
+.sparkle9 {
+  --spark-angle: 224deg;
+  --spark-distance: 84px;
+  --spark-delay: 128ms;
+  width: 6px;
+  height: 6px;
+}
+
+.sparkle10 {
+  --spark-angle: 252deg;
+  --spark-distance: 58px;
+  --spark-delay: 144ms;
+  width: 10px;
+  height: 10px;
+}
+
+.sparkle11 {
+  --spark-angle: 280deg;
+  --spark-distance: 76px;
+  --spark-delay: 160ms;
+  width: 8px;
+  height: 8px;
+}
+
+.sparkle12 {
+  --spark-angle: 308deg;
+  --spark-distance: 92px;
+  --spark-delay: 176ms;
+  width: 6px;
+  height: 6px;
+}
+
+.sparkle13 {
+  --spark-angle: 332deg;
+  --spark-distance: 62px;
+  --spark-delay: 192ms;
+  width: 10px;
+  height: 10px;
+}
+
+.sparkle14 {
+  --spark-angle: 348deg;
+  --spark-distance: 74px;
+  --spark-delay: 208ms;
+  width: 8px;
+  height: 8px;
+}
+
+@keyframes sparkle-burst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--spark-angle)) translateY(0) scale(0.35);
+  }
+
+  18% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--spark-angle)) translateY(calc(var(--spark-distance) * -1)) scale(1.15);
+  }
+}

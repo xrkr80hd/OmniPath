@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+:root {
+  --background: #030712;
+  --foreground: #e5eef9;
+  --surface: rgba(15, 23, 42, 0.86);
+  --surface-strong: rgba(12, 18, 31, 0.96);
+  --border: rgba(255, 255, 255, 0.12);
+  --accent: #e8bc6a;
+  --accent-strong: #f8d48f;
+  --muted: #9fb0c3;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), sans-serif;
+  background-image:
+    radial-gradient(circle at top, rgba(232, 188, 106, 0.16), transparent 30%),
+    linear-gradient(180deg, rgba(3, 7, 18, 1) 0%, rgba(6, 12, 25, 1) 100%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.omni-shell {
+  width: min(1180px, calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+.omni-card {
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03)),
+    var(--surface);
+  padding: clamp(1.25rem, 2vw, 2rem);
+  box-shadow: 0 24px 80px rgba(2, 6, 23, 0.38);
+}
+
+.omni-kicker {
+  margin: 0;
+  color: var(--accent-strong);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.omni-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.omni-sparkle {
+  transform: translate(-50%, -50%);
+  animation: omni-sparkle-burst 650ms ease-out forwards;
+}
+
+@keyframes omni-sparkle-burst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--sparkle-angle)) translateY(0) scale(0.35);
+  }
+
+  18% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--sparkle-angle)) translateY(calc(var(--sparkle-distance) * -1)) scale(1.2);
+  }
+}
+
+@media (max-width: 720px) {
+  .omni-shell {
+    width: min(100% - 1.25rem, 1180px);
+  }
+}

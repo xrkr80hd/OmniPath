@@ -1,0 +1,148 @@
+.root {
+  margin-top: 18px;
+}
+
+.root[hidden] {
+  display: none;
+}
+
+.panel {
+  display: grid;
+  gap: 18px;
+  border: 1px solid #d8dee7;
+  background: linear-gradient(180deg, #ffffff 0%, #f9fbfc 100%);
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #526071;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  color: #101828;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.closeButton {
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid #111827;
+  background: #ffffff;
+  color: #111827;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.closeButton:hover {
+  background: #f8fafc;
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid #0f766e;
+  outline-offset: 2px;
+}
+
+.list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.itemRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid #d8dee7;
+  background: #ffffff;
+  padding: 14px 16px;
+}
+
+.itemIdentity {
+  display: grid;
+  gap: 6px;
+}
+
+.itemName {
+  color: #101828;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.itemType {
+  color: #526071;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.quantity {
+  color: #111827;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.emptyState {
+  display: grid;
+  gap: 8px;
+  border: 1px solid #d8dee7;
+  background: #ffffff;
+  padding: 18px;
+}
+
+.emptyTitle {
+  margin: 0;
+  color: #101828;
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+
+.emptyNote {
+  margin: 0;
+  color: #526071;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 560px) {
+  .panel {
+    padding: 18px;
+  }
+
+  .header {
+    flex-direction: column;
+  }
+
+  .closeButton {
+    width: 100%;
+  }
+
+  .itemRow {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
