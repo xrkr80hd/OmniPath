@@ -26,9 +26,9 @@ This log is the forward-looking execution ledger for OmniPath. It exists to keep
 - [x] Task 4: Build the command center shell and replace the campaign hub placeholder
 - [x] Task 5: Add DM private controls and encounter stage behavior
 - [x] Task 6: Build the player companion and turn-locked action tray
-- [ ] Task 7: Replace remaining placeholder routes and delete the old placeholder chrome
+- [x] Task 7: Replace remaining placeholder routes and delete the old placeholder chrome
 
 ## Current Focus
 
-- Current task: `Task 7`
-- Current phase: `Ready to replace the remaining placeholder routes and delete the old placeholder chrome`
+- Current task: `Plan complete`
+- Current phase: `All seven command-center implementation tasks are now built and verified`

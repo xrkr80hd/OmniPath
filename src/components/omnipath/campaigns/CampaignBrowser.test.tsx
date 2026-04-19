@@ -22,4 +22,11 @@ describe("CampaignBrowser", () => {
       /glass harbor.*neutral shell.*breakwater causeway.*4 present/i,
     );
   });
+
+  it("does not render legacy placeholder copy in the new shell", () => {
+    render(<CampaignBrowser campaigns={listCampaigns()} />);
+
+    expect(screen.queryByText(/route placeholder/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/phase 1 open/i)).not.toBeInTheDocument();
+  });
 });

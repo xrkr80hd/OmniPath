@@ -1,6 +1,6 @@
-import { RoutePlaceholder } from "@/components/layout/RoutePlaceholder";
-import { SiteFooter } from "@/components/layout/SiteFooter";
-import { SiteHeader } from "@/components/layout/SiteHeader";
+import Link from "next/link";
+
+import { SimpleShell } from "@/components/omnipath/support/SimpleShell";
 
 type SessionZeroPageProps = {
   params: Promise<{
@@ -12,24 +12,14 @@ export default async function SessionZeroPage({ params }: SessionZeroPageProps) 
   const { campaignId } = await params;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
-      <SiteHeader />
-      <RoutePlaceholder
-        eyebrow="Session Zero"
-        title={`Create-new-character flow for ${campaignId}`}
-        summary="The MVP character entry path is locked to Session Zero creation only. Import and existing-character selection remain out of scope for this local pass."
-        status="creation staged"
-        notes={[
-          "Session Zero is the only locked MVP character-entry path right now.",
-          "Phase 1 is for route and screen testing, not saved character data.",
-          "This route exists so the campaign branch already knows where character creation belongs.",
-        ]}
-        links={[
-          { href: `/campaigns/${campaignId}`, label: "Back to campaign hub" },
-          { href: "/characters/vale-warden", label: "Character sheet placeholder" },
-        ]}
-      />
-      <SiteFooter />
-    </div>
+    <SimpleShell
+      eyebrow="Session Zero"
+      title={`Build a new character for ${campaignId}`}
+      summary="Keep Session Zero focused on character creation and party setup, not on the old branching screen flow."
+    >
+      <Link href="/characters/vale-warden" className="inline-flex border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-slate-100 transition hover:border-amber-300/30 hover:bg-amber-200/10 hover:text-amber-100">
+        Open companion preview
+      </Link>
+    </SimpleShell>
   );
 }
