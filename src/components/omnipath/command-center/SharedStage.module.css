@@ -1,0 +1,77 @@
+.stage {
+  min-height: 28rem;
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    radial-gradient(circle at top, rgba(202, 167, 101, 0.08), transparent 26%),
+    linear-gradient(180deg, rgba(19, 27, 41, 0.94), rgba(10, 16, 27, 0.98));
+  box-shadow: 0 24px 72px rgba(2, 5, 12, 0.28);
+}
+
+.header {
+  display: grid;
+  gap: 0.7rem;
+  align-content: start;
+}
+
+.kicker,
+.sceneLabel {
+  margin: 0;
+  color: var(--op-accent);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+}
+
+.body,
+.sceneText,
+.enemyStatus {
+  margin: 0;
+  color: var(--op-muted);
+  line-height: 1.7;
+}
+
+.sceneCard,
+.enemyCard {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.sceneCard {
+  display: grid;
+  gap: 0.9rem;
+  align-content: start;
+  padding: 1.1rem 1.15rem;
+}
+
+.enemyList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.enemyCard {
+  display: grid;
+  gap: 0.4rem;
+  padding: 1rem;
+}
+
+.enemyName {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}

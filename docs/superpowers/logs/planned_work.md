@@ -23,12 +23,12 @@ This log is the forward-looking execution ledger for OmniPath. It exists to keep
 - [x] Task 1: Add test harness and typed demo fixtures
 - [x] Task 2: Strip the legacy root flow and keep one branded entry surface
 - [x] Task 3: Build the shared theme layer and campaign browser
-- [ ] Task 4: Build the command center shell and replace the campaign hub placeholder
+- [x] Task 4: Build the command center shell and replace the campaign hub placeholder
 - [ ] Task 5: Add DM private controls and encounter stage behavior
 - [ ] Task 6: Build the player companion and turn-locked action tray
 - [ ] Task 7: Replace remaining placeholder routes and delete the old placeholder chrome
 
 ## Current Focus
 
-- Current task: `Task 4`
-- Current phase: `Ready to implement the shared command-center shell after Task 3 verification, review, and live browser checks`
+- Current task: `Task 5`
+- Current phase: `Ready to add DM-private controls and encounter-stage behavior on top of the verified shared shell`
