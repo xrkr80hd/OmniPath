@@ -1,0 +1,133 @@
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 1rem;
+  padding: 1rem;
+  background:
+    radial-gradient(circle at top, rgba(202, 167, 101, 0.12), transparent 24%),
+    linear-gradient(180deg, rgba(8, 12, 20, 1), rgba(11, 16, 27, 1));
+  color: var(--op-text);
+}
+
+.summary,
+.panel,
+.actionTray {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)),
+    rgba(15, 21, 33, 0.92);
+  box-shadow: 0 20px 48px rgba(2, 5, 12, 0.22);
+}
+
+.summary {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1.15rem;
+}
+
+.name {
+  margin: 0;
+  font-size: clamp(2.2rem, 8vw, 3.2rem);
+  letter-spacing: -0.06em;
+}
+
+.status {
+  margin: 0;
+  color: var(--op-muted);
+}
+
+.dashboard {
+  display: grid;
+  gap: 1rem;
+}
+
+.panel {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem;
+}
+
+.panelLabel {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.list,
+.feed {
+  display: grid;
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item,
+.feedItem {
+  display: grid;
+  gap: 0.25rem;
+  padding-left: 0.8rem;
+  border-left: 1px solid rgba(202, 167, 101, 0.3);
+}
+
+.itemName,
+.feedTitle {
+  color: var(--op-text);
+}
+
+.itemDetail,
+.feedDetail,
+.lockReason {
+  color: var(--op-muted);
+  line-height: 1.6;
+}
+
+.lockReason {
+  margin: 0.35rem 0 0;
+}
+
+.actionTray {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.endTurn {
+  min-width: 8rem;
+  min-height: 3rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(202, 167, 101, 0.36);
+  background: rgba(202, 167, 101, 0.1);
+  color: var(--op-text);
+}
+
+.endTurn:disabled {
+  opacity: 0.5;
+}
+
+@media (min-width: 840px) {
+  .shell {
+    padding: 1.5rem;
+  }
+
+  .dashboard {
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 22rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .actionTray {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .endTurn {
+    width: 100%;
+  }
+}
