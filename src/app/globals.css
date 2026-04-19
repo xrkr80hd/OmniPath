@@ -9,6 +9,13 @@
   --accent: #e8bc6a;
   --accent-strong: #f8d48f;
   --muted: #9fb0c3;
+  --op-bg: #0b1018;
+  --op-surface: rgba(14, 19, 31, 0.82);
+  --op-panel: rgba(20, 28, 44, 0.86);
+  --op-border: rgba(245, 241, 231, 0.14);
+  --op-text: #f2efe7;
+  --op-muted: #afbbcb;
+  --op-accent: #caa765;
 }
 
 @theme inline {
@@ -27,12 +34,19 @@ html {
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background:
+    radial-gradient(circle at top, rgba(202, 167, 101, 0.18), transparent 28%),
+    linear-gradient(180deg, #08101a 0%, #0c1420 100%);
+  color: var(--op-text);
   font-family: var(--font-geist-sans), sans-serif;
-  background-image:
-    radial-gradient(circle at top, rgba(232, 188, 106, 0.16), transparent 30%),
-    linear-gradient(180deg, rgba(3, 7, 18, 1) 0%, rgba(6, 12, 25, 1) 100%);
+}
+
+body.omni-neutral-shell,
+.omni-neutral-shell {
+  background:
+    radial-gradient(circle at top, rgba(202, 167, 101, 0.18), transparent 28%),
+    linear-gradient(180deg, #08101a 0%, #0c1420 100%);
+  color: var(--op-text);
 }
 
 a {
