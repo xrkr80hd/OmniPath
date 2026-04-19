@@ -16,7 +16,7 @@
 
 ### Create
 
-- `vitest.config.ts`
+- `vitest.config.mts`
 - `src/test/setup.ts`
 - `src/lib/omnipath/demoData.ts`
 - `src/lib/omnipath/theme.ts`
@@ -78,7 +78,7 @@
 ## Task 1: Add Test Harness And Typed Demo Fixtures
 
 **Files:**
-- Create: `vitest.config.ts`
+- Create: `vitest.config.mts`
 - Create: `src/test/setup.ts`
 - Create: `src/lib/omnipath/demoData.test.ts`
 - Create: `src/lib/omnipath/demoData.ts`
@@ -87,7 +87,7 @@
 - [ ] **Step 1: Add the test runner wiring**
 
 ```ts
-// vitest.config.ts
+// vitest.config.mts
 import { defineConfig } from "vitest/config";
 import tsconfigPaths from "vite-tsconfig-paths";
 
@@ -281,7 +281,7 @@ Expected: PASS with `2 passed`.
 - [ ] **Step 6: Commit**
 
 ```bash
-git add package.json vitest.config.ts src/test/setup.ts src/lib/omnipath/demoData.ts src/lib/omnipath/demoData.test.ts
+git add package.json package-lock.json vitest.config.mts src/test/setup.ts src/lib/omnipath/demoData.ts src/lib/omnipath/demoData.test.ts
 git commit -m "test: add omnipath fixture baseline"
 ```
 

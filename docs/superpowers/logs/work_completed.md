@@ -16,3 +16,4 @@ This log is the completion ledger for OmniPath. Only finished and reviewed work 
 - 2026-04-18: Wrote and committed the command-center design spec at `docs/superpowers/specs/2026-04-18-omnipath-command-center-design.md` (`0278934`).
 - 2026-04-18: Wrote the command-center implementation plan at `docs/superpowers/plans/2026-04-18-omnipath-command-center-implementation.md`.
 - 2026-04-18: Initialized LICL process tracking with `planned_work.md` and `work_completed.md`.
+- 2026-04-18: Completed Task 1 for the command-center plan. Added Vitest + jsdom + Testing Library wiring, typed OmniPath demo fixtures, and regression coverage for fixture mutation safety. Verified with `npm test -- src/lib/omnipath/demoData.test.ts` using the local Node install on `PATH`; result: `1 file passed, 3 tests passed`. Runtime compatibility note: Vitest config uses `vitest.config.mts` in this repo so `vite-tsconfig-paths` loads correctly as ESM.

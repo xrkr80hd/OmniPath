@@ -20,7 +20,7 @@ This log is the forward-looking execution ledger for OmniPath. It exists to keep
 
 ## Task Queue
 
-- [ ] Task 1: Add test harness and typed demo fixtures
+- [x] Task 1: Add test harness and typed demo fixtures
 - [ ] Task 2: Strip the legacy root flow and keep one branded entry surface
 - [ ] Task 3: Build the shared theme layer and campaign browser
 - [ ] Task 4: Build the command center shell and replace the campaign hub placeholder
@@ -30,5 +30,5 @@ This log is the forward-looking execution ledger for OmniPath. It exists to keep
 
 ## Current Focus
 
-- Current task: `Task 1`
-- Current phase: `Log planned_work complete; implementation dispatch next`
+- Current task: `Task 2`
+- Current phase: `Task 1 completed and verified; cleanup task dispatch next`
