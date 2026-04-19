@@ -1,5 +1,10 @@
-import { HomeFlow } from "@/components/screens/HomeFlow";
+import { TitleScreen } from "@/components/screens/TitleScreen";
 
 export default function Home() {
-  return <HomeFlow />;
+  return (
+    <TitleScreen
+      primaryHref="/campaigns"
+      secondaryHref="/characters/vale-warden"
+    />
+  );
 }

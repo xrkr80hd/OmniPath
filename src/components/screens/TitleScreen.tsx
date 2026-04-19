@@ -2,7 +2,8 @@
 
 import { Cinzel_Decorative, Oxanium } from "next/font/google";
 import Image from "next/image";
-import { startTransition, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useState } from "react";
 
 import { SparkleEffect } from "@/components/landing/SparkleEffect";
 
@@ -21,7 +22,8 @@ const interfaceFont = Oxanium({
 });
 
 type TitleScreenProps = {
-  onEnter?: () => void;
+  primaryHref: string;
+  secondaryHref: string;
   footerNote?: string;
 };
 
@@ -47,85 +49,41 @@ const titleSequence = [
   "/omnipath/screens/title-sequence/OP_steampunk1.jpg",
 ];
 
+const defaultTitleImage = titleSequence[0];
+
 export function TitleScreen({
-  onEnter,
+  primaryHref,
+  secondaryHref,
   footerNote,
 }: TitleScreenProps) {
   const [burstKey, setBurstKey] = useState(0);
-  const [isEntered, setIsEntered] = useState(false);
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const enterTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => {
-    setActiveImageIndex(Math.floor(Math.random() * titleSequence.length));
-
-    return () => {
-      if (enterTimeoutRef.current) {
-        clearTimeout(enterTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  function handleEnter() {
-    if (isEntered) {
-      return;
-    }
-
+  function handleEntryFocus() {
     setBurstKey((current) => current + 1);
-
-    startTransition(() => {
-      setIsEntered(true);
-    });
-
-    if (onEnter) {
-      enterTimeoutRef.current = setTimeout(() => {
-        onEnter();
-      }, 320);
-    }
   }
 
   return (
-    <main
-      className={`${styles.screen} ${titleFont.variable} ${interfaceFont.variable}`}
-      onClick={handleEnter}
-    >
+    <main className={`${styles.screen} ${titleFont.variable} ${interfaceFont.variable}`}>
       <div className={styles.imageStack} aria-hidden="true">
-        {titleSequence.map((imagePath, index) => {
-          const imageClassName = [styles.imageBlur, index === activeImageIndex ? styles.imageBlurActive : ""]
-            .filter(Boolean)
-            .join(" ");
-
-          return (
-            <div key={`blur-${imagePath}`} className={imageClassName}>
-              <Image
-                src={imagePath}
-                alt=""
-                fill
-                sizes="100vw"
-                className={styles.blurImage}
-              />
-            </div>
-          );
-        })}
+        <div className={`${styles.imageBlur} ${styles.imageBlurActive}`}>
+          <Image
+            src={defaultTitleImage}
+            alt=""
+            fill
+            sizes="100vw"
+            className={styles.blurImage}
+          />
+        </div>
 
         <div className={styles.imageFrame}>
-          {titleSequence.map((imagePath, index) => {
-            const imageClassName = [styles.sequenceImage, index === activeImageIndex ? styles.sequenceImageActive : ""]
-              .filter(Boolean)
-              .join(" ");
-
-            return (
-              <Image
-                key={imagePath}
-                src={imagePath}
-                alt=""
-                fill
-                priority={index === 0}
-                sizes="100vw"
-                className={imageClassName}
-              />
-            );
-          })}
+          <Image
+            src={defaultTitleImage}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className={`${styles.sequenceImage} ${styles.sequenceImageActive}`}
+          />
         </div>
       </div>
 
@@ -136,13 +94,39 @@ export function TitleScreen({
       <section className={styles.content} aria-label="Title screen">
         <p className={styles.eyebrow}>Phase I</p>
 
+        <div className={styles.logoFrame}>
+          <div className={styles.logoGlow} aria-hidden="true" />
+          <Image
+            src="/omnipath/assets/logos/omnipath - logo.png"
+            alt="OmniPath logo"
+            width={720}
+            height={288}
+            priority
+            className={styles.logoImage}
+          />
+        </div>
+
         <div className={styles.entryZone}>
-          <button type="button" className={styles.enterButton} onClick={handleEnter}>
+          <Link
+            href={primaryHref}
+            className={styles.enterButton}
+            onMouseEnter={handleEntryFocus}
+            onFocus={handleEntryFocus}
+          >
             <span className={styles.enterPrimary}>Enter The Gate</span>
-          </button>
+          </Link>
+
+          <Link
+            href={secondaryHref}
+            className={`${styles.enterButton} ${styles.secondaryButton}`}
+            onMouseEnter={handleEntryFocus}
+            onFocus={handleEntryFocus}
+          >
+            <span className={styles.enterPrimary}>Open Companion</span>
+          </Link>
 
           <p className={styles.enterSecondary}>
-            {isEntered ? "Threshold engaged." : "Attune the passage and begin."}
+            Attune the passage and begin.
           </p>
 
           <div className={styles.sparkleAnchor}>

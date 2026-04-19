@@ -337,6 +337,12 @@ Expected: FAIL because `primaryHref` and `secondaryHref` do not exist on `TitleS
 
 - [ ] **Step 3: Replace callback-driven entry with route-driven entry and update `/`**
 
+User clarification adopted during execution:
+- Keep the landing page as the branded OmniPath "start game" surface.
+- Do not flatten it into a plain utility page.
+- Preserve approved trademarked OmniPath logo treatment, atmospheric background treatment, and entry-screen feel while changing the interaction from in-page callback flow to route-driven navigation.
+- Any existing approved OmniPath logo asset in the repo may be used if it preserves the branded landing treatment.
+
 ```tsx
 // src/components/screens/TitleScreen.tsx
 "use client";
