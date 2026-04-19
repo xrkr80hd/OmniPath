@@ -2,10 +2,10 @@ import styles from "./CommandCenterShell.module.css";
 
 export function StatusStrip({
   label,
-  timer,
+  timerLabel,
 }: {
   label: string;
-  timer: number;
+  timerLabel: string;
 }) {
   return (
     <footer className={styles.statusStrip}>
@@ -14,8 +14,8 @@ export function StatusStrip({
         <p className={styles.statusValue}>{label}</p>
       </div>
 
-      <div className={styles.timer} aria-label={`Encounter timer ${timer} seconds`}>
-        {timer}s timer
+      <div className={styles.timer} aria-label={timerLabel}>
+        {timerLabel}
       </div>
     </footer>
   );

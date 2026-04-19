@@ -48,4 +48,24 @@ describe("CommandCenterShell", () => {
       "/campaigns/glass-harbor?role=dm&stage=encounter",
     );
   });
+
+  it("shows DM-only controls without leaking them into player view", () => {
+    const campaign = getCampaignById("glass-harbor");
+
+    if (!campaign) {
+      throw new Error("missing fixture");
+    }
+
+    const { rerender } = render(
+      <CommandCenterShell campaign={campaign} role="player" activeStage="encounter" />,
+    );
+
+    expect(screen.queryByText(/push to shared stage/i)).not.toBeInTheDocument();
+
+    rerender(<CommandCenterShell campaign={campaign} role="dm" activeStage="encounter" />);
+
+    expect(screen.getByText(/push to shared stage/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/vale warden/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/45s remaining/i)).toBeInTheDocument();
+  });
 });

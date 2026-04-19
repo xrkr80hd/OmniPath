@@ -127,6 +127,12 @@
   padding: 1rem clamp(1rem, 3vw, 2.5rem);
 }
 
+.sideStack {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
 .drawer {
   display: grid;
   gap: 1rem;
@@ -159,6 +165,20 @@
   display: block;
   margin-top: 0.25rem;
   color: var(--op-muted);
+}
+
+.consoleActions {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.consoleButton {
+  min-height: 2.9rem;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid rgba(202, 167, 101, 0.36);
+  background: rgba(202, 167, 101, 0.1);
+  color: var(--op-text);
+  text-align: left;
 }
 
 .statusStrip {
