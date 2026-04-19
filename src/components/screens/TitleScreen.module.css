@@ -90,7 +90,8 @@
   min-height: min(100vh - 2rem, 48rem);
   padding: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 3vw, 3rem);
   display: grid;
-  align-content: space-between;
+  grid-template-rows: auto 1fr auto;
+  align-content: stretch;
   gap: 1.2rem;
   justify-items: center;
   text-align: center;
@@ -107,41 +108,11 @@
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
 }
 
-.logoFrame {
-  position: relative;
-  width: min(100%, 34rem);
-  margin-top: clamp(0.75rem, 2vh, 1.5rem);
-  padding: clamp(1rem, 2.5vw, 1.4rem) clamp(1.1rem, 3vw, 1.75rem);
-  display: grid;
-  place-items: center;
-}
-
-.logoGlow {
-  position: absolute;
-  inset: 8% 10%;
-  border-radius: 9999px;
-  background:
-    radial-gradient(circle, rgba(248, 212, 143, 0.28) 0%, rgba(120, 170, 228, 0.14) 42%, rgba(2, 6, 17, 0) 74%);
-  filter: blur(26px);
-  opacity: 0.95;
-}
-
-.logoImage {
-  position: relative;
-  z-index: 1;
-  width: min(100%, 29rem);
-  height: auto;
-  object-fit: contain;
-  filter:
-    drop-shadow(0 0 18px rgba(248, 212, 143, 0.2))
-    drop-shadow(0 0 36px rgba(120, 170, 228, 0.16))
-    drop-shadow(0 18px 42px rgba(0, 0, 0, 0.42));
-}
-
 .entryZone {
-  position: relative;
-  margin-top: auto;
-  margin-bottom: clamp(3.75rem, 12vh, 6.75rem);
+  position: absolute;
+  left: 50%;
+  bottom: clamp(2.75rem, 9vh, 4.75rem);
+  transform: translateX(-50%);
   width: 100%;
   display: grid;
   gap: 0.7rem;
@@ -304,13 +275,9 @@
   }
 
   .entryZone {
-    margin-bottom: clamp(3rem, 9vh, 4.25rem);
+    bottom: clamp(2.25rem, 8vh, 3.5rem);
   }
 
-  .logoFrame {
-    width: min(100%, 23rem);
-    padding-inline: 0.5rem;
-  }
   .enterButton {
     width: min(100%, 10.8rem);
     min-height: 2.1rem;

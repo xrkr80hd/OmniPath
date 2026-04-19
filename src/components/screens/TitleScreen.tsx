@@ -94,18 +94,6 @@ export function TitleScreen({
       <section className={styles.content} aria-label="Title screen">
         <p className={styles.eyebrow}>Phase I</p>
 
-        <div className={styles.logoFrame}>
-          <div className={styles.logoGlow} aria-hidden="true" />
-          <Image
-            src="/omnipath/assets/logos/omnipath - logo.png"
-            alt="OmniPath logo"
-            width={720}
-            height={288}
-            priority
-            className={styles.logoImage}
-          />
-        </div>
-
         <div className={styles.entryZone}>
           <Link
             href={primaryHref}

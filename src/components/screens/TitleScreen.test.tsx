@@ -36,10 +36,6 @@ describe("TitleScreen", () => {
     expect(
       screen.getByRole("link", { name: /open companion/i }),
     ).toHaveAttribute("href", "/characters/vale-warden");
-    expect(screen.getByAltText(/omnipath logo/i)).toHaveAttribute(
-      "src",
-      "/omnipath/assets/logos/omnipath - logo.png",
-    );
     const titleSequenceImages = Array.from(
       container.querySelectorAll('img[src^="/omnipath/screens/title-sequence/"]'),
     );
@@ -48,6 +44,7 @@ describe("TitleScreen", () => {
       "src",
       "/omnipath/screens/title-sequence/OP_16bit1.jpg",
     );
+    expect(screen.queryByAltText(/omnipath logo/i)).not.toBeInTheDocument();
     expect(
       screen.queryByText(/page 2 \/\/ what do you want to do\?/i),
     ).not.toBeInTheDocument();
