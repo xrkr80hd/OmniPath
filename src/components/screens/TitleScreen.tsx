@@ -22,8 +22,9 @@ const interfaceFont = Oxanium({
 });
 
 type TitleScreenProps = {
-  primaryHref: string;
-  secondaryHref: string;
+  createHref: string;
+  loadHref: string;
+  settingsHref: string;
   footerNote?: string;
 };
 
@@ -52,8 +53,9 @@ const titleSequence = [
 const defaultTitleImage = titleSequence[0];
 
 export function TitleScreen({
-  primaryHref,
-  secondaryHref,
+  createHref,
+  loadHref,
+  settingsHref,
   footerNote,
 }: TitleScreenProps) {
   const [burstKey, setBurstKey] = useState(0);
@@ -92,29 +94,38 @@ export function TitleScreen({
       <div className={styles.aura} aria-hidden="true" />
 
       <section className={styles.content} aria-label="Title screen">
-        <p className={styles.eyebrow}>Phase I</p>
+        <p className={styles.eyebrow}>Character Creation</p>
 
         <div className={styles.entryZone}>
           <Link
-            href={primaryHref}
+            href={createHref}
             className={styles.enterButton}
             onMouseEnter={handleEntryFocus}
             onFocus={handleEntryFocus}
           >
-            <span className={styles.enterPrimary}>Enter The Gate</span>
+            <span className={styles.enterPrimary}>Create Character</span>
           </Link>
 
           <Link
-            href={secondaryHref}
+            href={loadHref}
             className={`${styles.enterButton} ${styles.secondaryButton}`}
             onMouseEnter={handleEntryFocus}
             onFocus={handleEntryFocus}
           >
-            <span className={styles.enterPrimary}>Open Companion</span>
+            <span className={styles.enterPrimary}>Load Character</span>
+          </Link>
+
+          <Link
+            href={settingsHref}
+            className={`${styles.enterButton} ${styles.tertiaryButton}`}
+            onMouseEnter={handleEntryFocus}
+            onFocus={handleEntryFocus}
+          >
+            <span className={styles.enterPrimary}>Settings</span>
           </Link>
 
           <p className={styles.enterSecondary}>
-            Attune the passage and begin.
+            Choose how you want to begin.
           </p>
 
           <div className={styles.sparkleAnchor}>

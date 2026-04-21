@@ -3,8 +3,9 @@ import { TitleScreen } from "@/components/screens/TitleScreen";
 export default function Home() {
   return (
     <TitleScreen
-      primaryHref="/campaigns"
-      secondaryHref="/characters/vale-warden"
+      createHref="/characters/new"
+      loadHref="/characters/vale-warden"
+      settingsHref="/settings"
     />
   );
 }

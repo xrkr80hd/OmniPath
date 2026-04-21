@@ -25,17 +25,21 @@ describe("TitleScreen", () => {
   it("renders branded route-driven entry links", () => {
     const { container } = render(
       <TitleScreen
-        primaryHref="/campaigns"
-        secondaryHref="/characters/vale-warden"
+        createHref="/characters/new"
+        loadHref="/characters/vale-warden"
+        settingsHref="/settings"
       />,
     );
 
     expect(
-      screen.getByRole("link", { name: /enter the gate/i }),
-    ).toHaveAttribute("href", "/campaigns");
+      screen.getByRole("link", { name: /create character/i }),
+    ).toHaveAttribute("href", "/characters/new");
     expect(
-      screen.getByRole("link", { name: /open companion/i }),
+      screen.getByRole("link", { name: /load character/i }),
     ).toHaveAttribute("href", "/characters/vale-warden");
+    expect(
+      screen.getByRole("link", { name: /settings/i }),
+    ).toHaveAttribute("href", "/settings");
     const titleSequenceImages = Array.from(
       container.querySelectorAll('img[src^="/omnipath/screens/title-sequence/"]'),
     );

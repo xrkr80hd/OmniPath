@@ -1,0 +1,582 @@
+.shell {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: #040813;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.videoLayer {
+  position: absolute;
+  inset: 0;
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 900ms ease;
+}
+
+.videoIdle {
+  opacity: 0;
+}
+
+.videoLive {
+  opacity: 1;
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top, rgba(128, 180, 255, 0.12), transparent 28%),
+    radial-gradient(circle at bottom, rgba(232, 188, 106, 0.18), transparent 24%),
+    linear-gradient(180deg, rgba(2, 5, 12, 0.38), rgba(2, 6, 14, 0.78));
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  width: min(1160px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: 1rem;
+  height: 100%;
+  min-height: 0;
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.topActions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.exitLink,
+.soundButton,
+.continueLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.7rem 0.95rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(8, 13, 23, 0.62);
+  color: rgba(238, 244, 250, 0.94);
+  font-weight: 600;
+}
+
+.soundGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(8, 13, 23, 0.62);
+}
+
+.soundSlider {
+  width: 7rem;
+}
+
+.soundHint {
+  margin: 0;
+  color: rgba(175, 187, 203, 0.9);
+  font-size: 0.82rem;
+}
+
+.progressCard,
+.panel {
+  border: 1px solid rgba(231, 198, 131, 0.18);
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(248, 212, 143, 0.12), rgba(255, 255, 255, 0.02) 18%, rgba(255, 255, 255, 0.01)),
+    rgba(7, 11, 21, 0.8);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 246, 222, 0.14),
+    0 28px 88px rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(12px);
+}
+
+.progressCard {
+  padding: 1rem 1.2rem;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.progressHeading {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.progressText {
+  margin: 0;
+  color: rgba(228, 236, 245, 0.92);
+}
+
+.savedText {
+  margin: 0;
+  color: rgba(248, 212, 143, 0.9);
+}
+
+.breadcrumbs {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumb,
+.breadcrumbActive {
+  min-height: 2.75rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.86rem;
+}
+
+.breadcrumbActive {
+  border-color: rgba(248, 212, 143, 0.44);
+  background: rgba(248, 212, 143, 0.12);
+}
+
+.panel {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at top right, rgba(248, 212, 143, 0.12), transparent 22%),
+    linear-gradient(135deg, rgba(114, 173, 255, 0.08), transparent 32%);
+  opacity: 0.9;
+}
+
+.panelBody {
+  position: relative;
+  z-index: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  align-content: start;
+  gap: 1.25rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  padding-right: max(clamp(1.25rem, 3vw, 2rem), calc(clamp(1.25rem, 3vw, 2rem) - 0.45rem));
+}
+
+.panelBody::-webkit-scrollbar {
+  width: 0.7rem;
+}
+
+.panelBody::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 999px;
+}
+
+.panelBody::-webkit-scrollbar-thumb {
+  background: rgba(248, 212, 143, 0.34);
+  border-radius: 999px;
+  border: 2px solid rgba(8, 13, 24, 0.4);
+}
+
+.stepTitle {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: -0.04em;
+}
+
+.stepSummary {
+  margin: 0;
+  color: rgba(225, 233, 242, 0.88);
+  line-height: 1.7;
+  max-width: 60ch;
+  position: relative;
+  z-index: 1;
+}
+
+.fieldGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.field,
+.wideField {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.wideField {
+  grid-column: 1 / -1;
+}
+
+.label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(248, 212, 143, 0.85);
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  border: 1px solid rgba(241, 214, 161, 0.18);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03)),
+    rgba(10, 15, 27, 0.84);
+  color: rgba(244, 248, 252, 0.96);
+  padding: 0.8rem 0.9rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.select {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(248, 212, 143, 0.9) 50%),
+    linear-gradient(135deg, rgba(248, 212, 143, 0.9) 50%, transparent 50%);
+  background-position:
+    calc(100% - 1.25rem) calc(50% - 0.12rem),
+    calc(100% - 0.95rem) calc(50% - 0.12rem);
+  background-size: 0.42rem 0.42rem, 0.42rem 0.42rem;
+  background-repeat: no-repeat;
+  padding-right: 2.25rem;
+}
+
+.select:disabled {
+  opacity: 0.58;
+  cursor: not-allowed;
+}
+
+.textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+.identityLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.identityFormCard,
+.identityPreview {
+  border: 1px solid rgba(241, 214, 161, 0.14);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    rgba(8, 13, 24, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 16px 42px rgba(0, 0, 0, 0.22);
+}
+
+.identityFormCard {
+  padding: 1rem;
+}
+
+.identityStack {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.identityPreview {
+  padding: 1.1rem;
+  align-content: start;
+  gap: 0.8rem;
+  display: grid;
+  background:
+    radial-gradient(circle at top right, rgba(96, 155, 255, 0.18), transparent 28%),
+    linear-gradient(180deg, rgba(248, 212, 143, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(8, 13, 24, 0.74);
+}
+
+.previewEyebrow {
+  margin: 0;
+  font-size: 0.76rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(248, 212, 143, 0.84);
+}
+
+.previewTitle {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  line-height: 1.1;
+}
+
+.previewBody,
+.previewNote {
+  margin: 0;
+  color: rgba(220, 230, 241, 0.84);
+  line-height: 1.6;
+}
+
+.previewThreads {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.previewThread {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(248, 212, 143, 0.42);
+  color: rgba(248, 221, 164, 0.96);
+  font-size: 0.84rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.choiceGrid {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+
+.choiceCard,
+.choiceCardActive {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.9rem;
+  display: grid;
+  gap: 0.45rem;
+  cursor: pointer;
+}
+
+.choiceCardActive {
+  border-color: rgba(248, 212, 143, 0.44);
+  background: rgba(248, 212, 143, 0.12);
+}
+
+.choiceTitle {
+  font-weight: 700;
+}
+
+.choiceMeta {
+  color: rgba(175, 187, 203, 0.9);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.choiceInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.traitColumns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.traitBox {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.traitGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.traitChip,
+.traitChipActive {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+}
+
+.traitChipActive {
+  border-color: rgba(248, 212, 143, 0.44);
+  background: rgba(248, 212, 143, 0.12);
+}
+
+.advanced {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.toggleLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.reviewGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1.2fr 0.8fr;
+}
+
+.reviewPanel {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.reviewCopy {
+  margin: 0;
+  color: rgba(229, 236, 244, 0.88);
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+.list {
+  margin: 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 0.5rem;
+  color: rgba(229, 236, 244, 0.88);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  padding: 1rem clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 3vw, 1.5rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(8, 13, 24, 0.12), rgba(8, 13, 24, 0.78)),
+    rgba(8, 13, 24, 0.82);
+  backdrop-filter: blur(10px);
+}
+
+.footerActions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.button,
+.buttonPrimary,
+.previewLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03)),
+    rgba(255, 255, 255, 0.04);
+  color: inherit;
+  font-weight: 600;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.buttonPrimary,
+.previewLink {
+  border-color: rgba(248, 212, 143, 0.34);
+  background:
+    linear-gradient(180deg, rgba(248, 212, 143, 0.24), rgba(248, 212, 143, 0.1)),
+    rgba(248, 212, 143, 0.12);
+}
+
+.button:disabled,
+.buttonPrimary:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.helper {
+  margin: 0;
+  color: rgba(175, 187, 203, 0.9);
+}
+
+@media (max-width: 920px) {
+  .fieldGrid,
+  .traitColumns,
+  .reviewGrid,
+  .identityLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .breadcrumbs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .content {
+    width: min(100% - 1rem, 1160px);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .topBar,
+  .footer {
+    align-items: stretch;
+  }
+
+  .topActions,
+  .footerActions {
+    width: 100%;
+  }
+
+  .exitLink,
+  .soundButton,
+  .continueLink,
+  .button,
+  .buttonPrimary,
+  .previewLink {
+    flex: 1 1 0;
+  }
+
+  .traitGrid {
+    grid-template-columns: 1fr;
+  }
+}

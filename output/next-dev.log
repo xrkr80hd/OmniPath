@@ -1,0 +1,17 @@
+
+> omnipath@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.198:3000
+✓ Ready in 669ms
+Creating turbopack project {
+  dir: 'C:\\Users\\XRKR80HD\\Documents\\GitHub\\YourLocal(2)\\OmniPath',
+  testMode: true
+}
+
+ GET / 200 in 521ms (next.js: 220ms, application-code: 301ms)
+ GET /campaigns 200 in 67ms (next.js: 30ms, application-code: 37ms)
+ GET /characters/vale-warden 200 in 647ms (next.js: 570ms, application-code: 77ms)
+[?25h

@@ -1,0 +1,132 @@
+.shell {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 3rem 0 4rem;
+}
+
+.hero {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)),
+    rgba(10, 15, 25, 0.78);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.34);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  letter-spacing: -0.04em;
+}
+
+.summary {
+  margin: 0;
+  color: rgba(232, 239, 247, 0.84);
+  line-height: 1.6;
+}
+
+.grid {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 1rem;
+}
+
+.panel {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(8, 13, 22, 0.8);
+  padding: 1.25rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.label {
+  margin: 0;
+  color: rgba(248, 212, 143, 0.84);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.prompt {
+  margin: 0;
+  color: rgba(226, 235, 248, 0.9);
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.chips,
+.stats,
+.items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip,
+.item,
+.stat {
+  padding: 0.55rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.meta {
+  margin: 0;
+  color: rgba(175, 187, 203, 0.92);
+  line-height: 1.7;
+}
+
+.actions {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  font-weight: 600;
+  transition: background 180ms ease, border-color 180ms ease;
+}
+
+.action:hover,
+.action:focus-visible {
+  border-color: rgba(248, 212, 143, 0.42);
+  background: rgba(248, 212, 143, 0.12);
+  outline: none;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+}

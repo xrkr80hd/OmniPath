@@ -39,6 +39,11 @@ body {
     linear-gradient(180deg, #08101a 0%, #0c1420 100%);
   color: var(--op-text);
   font-family: var(--font-geist-sans), sans-serif;
+  cursor: default;
+}
+
+body * {
+  cursor: inherit;
 }
 
 body.omni-neutral-shell,
@@ -52,6 +57,41 @@ body.omni-neutral-shell,
 a {
   color: inherit;
   text-decoration: none;
+}
+
+a,
+button,
+label,
+summary,
+input[type="checkbox"],
+input[type="radio"],
+input[type="range"],
+select {
+  cursor: pointer;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="url"],
+input[type="tel"],
+input[type="number"],
+textarea {
+  cursor: text;
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  cursor: not-allowed;
+}
+
+select option,
+select optgroup {
+  color: #0f172a;
+  background-color: #f6f1e6;
 }
 
 .omni-shell {
