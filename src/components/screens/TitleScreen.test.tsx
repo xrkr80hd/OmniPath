@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { act } from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { TitleScreen } from "./TitleScreen";
 
@@ -22,11 +23,15 @@ vi.mock("next/image", () => ({
 }));
 
 describe("TitleScreen", () => {
+  beforeEach(() => {
+    window.localStorage.clear();
+  });
+
   it("renders branded route-driven entry links", () => {
     const { container } = render(
       <TitleScreen
         createHref="/characters/new"
-        loadHref="/characters/vale-warden"
+        loadHref="/characters/load"
         settingsHref="/settings"
       />,
     );
@@ -36,7 +41,7 @@ describe("TitleScreen", () => {
     ).toHaveAttribute("href", "/characters/new");
     expect(
       screen.getByRole("link", { name: /load character/i }),
-    ).toHaveAttribute("href", "/characters/vale-warden");
+    ).toHaveAttribute("href", "/characters/load");
     expect(
       screen.getByRole("link", { name: /settings/i }),
     ).toHaveAttribute("href", "/settings");
@@ -52,5 +57,76 @@ describe("TitleScreen", () => {
     expect(
       screen.queryByText(/page 2 \/\/ what do you want to do\?/i),
     ).not.toBeInTheDocument();
+  });
+
+  it("keeps the same title art while the visitor remains on the page", () => {
+    vi.useFakeTimers();
+
+    const { container } = render(
+      <TitleScreen
+        createHref="/characters/new"
+        loadHref="/characters/load"
+        settingsHref="/settings"
+      />,
+    );
+
+    const getSequenceImages = () =>
+      Array.from(
+        container.querySelectorAll('img[src^="/omnipath/screens/title-sequence/"]'),
+      );
+
+    expect(getSequenceImages()[0]).toHaveAttribute(
+      "src",
+      "/omnipath/screens/title-sequence/OP_16bit1.jpg",
+    );
+
+    act(() => {
+      vi.advanceTimersByTime(10000);
+    });
+
+    expect(getSequenceImages()[0]).toHaveAttribute(
+      "src",
+      "/omnipath/screens/title-sequence/OP_16bit1.jpg",
+    );
+
+    vi.useRealTimers();
+  });
+
+  it("advances to a different title art on the next visit", () => {
+    const firstVisit = render(
+      <TitleScreen
+        createHref="/characters/new"
+        loadHref="/characters/load"
+        settingsHref="/settings"
+      />,
+    );
+
+    const firstVisitImages = Array.from(
+      firstVisit.container.querySelectorAll('img[src^="/omnipath/screens/title-sequence/"]'),
+    );
+
+    expect(firstVisitImages[0]).toHaveAttribute(
+      "src",
+      "/omnipath/screens/title-sequence/OP_16bit1.jpg",
+    );
+
+    firstVisit.unmount();
+
+    const secondVisit = render(
+      <TitleScreen
+        createHref="/characters/new"
+        loadHref="/characters/load"
+        settingsHref="/settings"
+      />,
+    );
+
+    const secondVisitImages = Array.from(
+      secondVisit.container.querySelectorAll('img[src^="/omnipath/screens/title-sequence/"]'),
+    );
+
+    expect(secondVisitImages[0]).toHaveAttribute(
+      "src",
+      "/omnipath/screens/title-sequence/OP_8bit1.jpg",
+    );
   });
 });

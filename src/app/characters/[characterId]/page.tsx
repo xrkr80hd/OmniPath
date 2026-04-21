@@ -1,7 +1,4 @@
-import { notFound } from "next/navigation";
-
-import { PlayerCompanionShell } from "@/components/omnipath/player/PlayerCompanionShell";
-import { getCharacterById } from "@/lib/omnipath/demoData";
+import { PlayerCompanionPageClient } from "@/components/omnipath/player/PlayerCompanionPageClient";
 
 type CharacterSheetPageProps = {
   params: Promise<{
@@ -13,11 +10,6 @@ export default async function CharacterSheetPage({
   params,
 }: CharacterSheetPageProps) {
   const { characterId } = await params;
-  const character = getCharacterById(characterId);
 
-  if (!character) {
-    notFound();
-  }
-
-  return <PlayerCompanionShell character={character} />;
+  return <PlayerCompanionPageClient characterId={characterId} />;
 }

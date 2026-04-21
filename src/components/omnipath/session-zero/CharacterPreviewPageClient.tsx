@@ -1,8 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
+import {
+  upsertSavedCharacterFromDraft,
+  writeSavedCharacterIdToDraft,
+} from "@/lib/omnipath/savedCharacters";
 import {
   buildCharacterPreviewData,
   createInitialSessionZeroDraft,
@@ -19,7 +23,9 @@ export function CharacterPreviewPageClient({
   campaignId: string;
   draftKey?: string;
 }) {
-  const character = useMemo(() => {
+  const [savedCharacterId, setSavedCharacterId] = useState<string | null>(null);
+
+  const draft = useMemo(() => {
     if (typeof window === "undefined") {
       return null;
     }
@@ -33,15 +39,37 @@ export function CharacterPreviewPageClient({
     try {
       const parsed = JSON.parse(stored) as Partial<SessionZeroDraft>;
 
-      return buildCharacterPreviewData({
+      return {
         ...createInitialSessionZeroDraft(campaignId),
         ...parsed,
         selectedCampaignId: parsed.selectedCampaignId ?? campaignId,
-      });
+      } satisfies SessionZeroDraft;
     } catch {
       return null;
     }
   }, [campaignId, draftKey]);
+
+  useEffect(() => {
+    if (!draft) {
+      return;
+    }
+
+    const savedCharacter = upsertSavedCharacterFromDraft(draft);
+
+    setSavedCharacterId(savedCharacter.id);
+
+    if (draft.savedCharacterId !== savedCharacter.id) {
+      writeSavedCharacterIdToDraft(savedCharacter.id, draftKey);
+    }
+  }, [draft, draftKey]);
+
+  const character = useMemo(() => {
+    if (!draft) {
+      return null;
+    }
+
+    return buildCharacterPreviewData(draft);
+  }, [draft]);
 
   if (!character) {
     return (
@@ -64,5 +92,10 @@ export function CharacterPreviewPageClient({
     );
   }
 
-  return <CharacterPreviewShell character={character} />;
+  return (
+    <CharacterPreviewShell
+      character={character}
+      companionHref={savedCharacterId ? `/characters/${savedCharacterId}` : "/characters/load"}
+    />
+  );
 }

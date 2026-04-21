@@ -3,6 +3,7 @@ import { listCampaigns } from "@/lib/omnipath/demoData";
 export const sessionZeroDraftStorageKey = "omnipath:session-zero:draft";
 
 export type SessionZeroDraft = {
+  savedCharacterId?: string;
   name: string;
   gender: "male" | "female";
   shortBackground: string;
@@ -39,11 +40,38 @@ export type CharacterPreviewData = {
   selectedCampaignName: string;
 };
 
-export const raceOptions = [
-  { id: "hill-dwarf", label: "Hill Dwarf", source: "DND", portraitCue: "broad cheekbones, weathered skin, practical braids, grounded traveler style" },
-  { id: "mountain-dwarf", label: "Mountain Dwarf", source: "DND", portraitCue: "heavier armor lines, granite jaw, battle-worn presence, stoic bearing" },
-  { id: "wood-elf", label: "Wood Elf", source: "DND", portraitCue: "keen eyes, woodland leathers, wind-cut hair, agile posture" },
+export const dndRaceOptions = [
+  { id: "aarakocra", label: "Aarakocra", source: "DND", portraitCue: "avian silhouette, wind-worn feathers, taloned poise, high-altitude focus" },
+  { id: "aasimar", label: "Aasimar", source: "DND", portraitCue: "radiant gaze, quiet grace, celestial undertone, polished travel-worn attire" },
+  { id: "air-genasi", label: "Air Genasi", source: "DND", portraitCue: "storm-tossed hair, airy layers, sharp profile, restless skyborn energy" },
+  { id: "dragonborn", label: "Dragonborn", source: "DND", portraitCue: "scaled profile, proud horns, armored travel kit, ember-lit presence" },
+  { id: "drow", label: "Drow", source: "DND", portraitCue: "moonlit pallor, silver hair, severe poise, subterranean elegance" },
+  { id: "earth-genasi", label: "Earth Genasi", source: "DND", portraitCue: "mineral textures, grounded stance, dusted leathers, carved-stone calm" },
+  { id: "fire-genasi", label: "Fire Genasi", source: "DND", portraitCue: "heat-hazed skin, ember hair, fierce posture, soot-kissed accents" },
+  { id: "firbolg", label: "Firbolg", source: "DND", portraitCue: "gentle giant presence, forest tones, broad features, patient strength" },
+  { id: "forest-gnome", label: "Forest Gnome", source: "DND", portraitCue: "leaf-toned layers, bright expression, nimble stance, woodland charm" },
+  { id: "goliath", label: "Goliath", source: "DND", portraitCue: "towering frame, mountain markings, weather-beaten gear, competitive calm" },
+  { id: "half-elf", label: "Half-Elf", source: "DND", portraitCue: "balanced features, diplomatic ease, refined travel wear, attentive gaze" },
+  { id: "half-orc", label: "Half-Orc", source: "DND", portraitCue: "scarred resilience, powerful build, direct stare, battered practical armor" },
   { id: "high-elf", label: "High Elf", source: "DND", portraitCue: "elegant posture, ceremonial details, refined features, luminous gaze" },
+  { id: "hill-dwarf", label: "Hill Dwarf", source: "DND", portraitCue: "broad cheekbones, weathered skin, practical braids, grounded traveler style" },
+  { id: "human", label: "Human", source: "DND", portraitCue: "adaptable traveler gear, expressive face, lived-in cloak, ready resolve" },
+  { id: "kenku", label: "Kenku", source: "DND", portraitCue: "shadowed feathers, clever hands, collected trinkets, cautious stance" },
+  { id: "lightfoot-halfling", label: "Lightfoot Halfling", source: "DND", portraitCue: "easy smile, nimble posture, road-dusted kit, effortless stealth" },
+  { id: "mountain-dwarf", label: "Mountain Dwarf", source: "DND", portraitCue: "heavier armor lines, granite jaw, battle-worn presence, stoic bearing" },
+  { id: "rock-gnome", label: "Rock Gnome", source: "DND", portraitCue: "clever eyes, soot-marked gloves, compact gadgets, delighted focus" },
+  { id: "stout-halfling", label: "Stout Halfling", source: "DND", portraitCue: "sturdy build, practical apron layers, cheerful resolve, sure-footed calm" },
+  { id: "tabaxi", label: "Tabaxi", source: "DND", portraitCue: "feline grace, patterned fur, collector's gear, curious confidence" },
+  { id: "tiefling", label: "Tiefling", source: "DND", portraitCue: "horned silhouette, infernal undertone, measured expression, ember-bright eyes" },
+  { id: "tortle", label: "Tortle", source: "DND", portraitCue: "weathered shell, pilgrimage pack, deliberate posture, calm ancient patience" },
+  { id: "triton", label: "Triton", source: "DND", portraitCue: "sea-born armor trim, noble bearing, coral accents, commanding stillness" },
+  { id: "warforged", label: "Warforged", source: "DND", portraitCue: "plated frame, rune-work seams, measured stance, enduring sentience" },
+  { id: "water-genasi", label: "Water Genasi", source: "DND", portraitCue: "sea-wet sheen, fluid motion, wave-toned accents, deep current calm" },
+  { id: "wood-elf", label: "Wood Elf", source: "DND", portraitCue: "keen eyes, woodland leathers, wind-cut hair, agile posture" },
+] as const;
+
+export const raceOptions = [
+  ...dndRaceOptions,
   { id: "human-freeblade", label: "Human Freeblade", source: "Pathfinder", portraitCue: "adaptable traveler gear, expressive face, well-used cloak, alert eyes" },
   { id: "half-orc", label: "Half-Orc", source: "Pathfinder", portraitCue: "scarred confidence, powerful build, worn steel accents, watchful expression" },
   { id: "gnome-tinker", label: "Gnome Tinker", source: "Pathfinder", portraitCue: "bright eyes, layered tools, clever grin, compact silhouette" },
@@ -139,12 +167,16 @@ export const inventoryKitOptions = [
 
 export const stepLabels = ["Basics", "Identity", "Traits", "Stats", "Kit", "Review"] as const;
 
-export function createInitialSessionZeroDraft(initialCampaignId?: string): SessionZeroDraft {
+export function createInitialSessionZeroDraft(
+  initialCampaignId?: string,
+  initialRealmId?: string,
+): SessionZeroDraft {
   return {
+    savedCharacterId: undefined,
     name: "",
     gender: "female",
     shortBackground: "",
-    realmId: "",
+    realmId: initialRealmId ?? "",
     raceId: "",
     backgroundId: "",
     height: "average",

@@ -3,7 +3,7 @@
 import { Cinzel_Decorative, Oxanium } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { SparkleEffect } from "@/components/landing/SparkleEffect";
 
@@ -51,6 +51,7 @@ const titleSequence = [
 ];
 
 const defaultTitleImage = titleSequence[0];
+const titleScreenImageStorageKey = "omnipath:title-screen-image-index";
 
 export function TitleScreen({
   createHref,
@@ -59,17 +60,34 @@ export function TitleScreen({
   footerNote,
 }: TitleScreenProps) {
   const [burstKey, setBurstKey] = useState(0);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || titleSequence.length < 2) {
+      return;
+    }
+
+    const storedIndex = window.localStorage.getItem(titleScreenImageStorageKey);
+    const previousIndex = storedIndex === null ? -1 : Number.parseInt(storedIndex, 10);
+    const normalizedPreviousIndex = Number.isNaN(previousIndex) ? -1 : previousIndex;
+    const nextIndex = (normalizedPreviousIndex + 1 + titleSequence.length) % titleSequence.length;
+
+    window.localStorage.setItem(titleScreenImageStorageKey, String(nextIndex));
+    setActiveImageIndex(nextIndex);
+  }, []);
 
   function handleEntryFocus() {
     setBurstKey((current) => current + 1);
   }
+
+  const activeTitleImage = titleSequence[activeImageIndex] ?? defaultTitleImage;
 
   return (
     <main className={`${styles.screen} ${titleFont.variable} ${interfaceFont.variable}`}>
       <div className={styles.imageStack} aria-hidden="true">
         <div className={`${styles.imageBlur} ${styles.imageBlurActive}`}>
           <Image
-            src={defaultTitleImage}
+            src={activeTitleImage}
             alt=""
             fill
             sizes="100vw"
@@ -79,7 +97,7 @@ export function TitleScreen({
 
         <div className={styles.imageFrame}>
           <Image
-            src={defaultTitleImage}
+            src={activeTitleImage}
             alt=""
             fill
             priority

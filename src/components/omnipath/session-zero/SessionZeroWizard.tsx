@@ -11,6 +11,7 @@ import {
   getCampaignOptions,
   getRaceOptionsForRealm,
   getRealmIdForRace,
+  getRealmLabel,
   inventoryKitOptions,
   negativeTraitOptions,
   positiveTraitOptions,
@@ -56,27 +57,33 @@ function attemptMediaPlay(
   }
 }
 
-function readStoredDraft(initialCampaignId?: string) {
+function readStoredDraft(initialCampaignId?: string, initialRealmId?: string) {
   if (typeof window === "undefined") {
-    return createInitialSessionZeroDraft(initialCampaignId);
+    return createInitialSessionZeroDraft(initialCampaignId, initialRealmId);
   }
 
   const stored = window.localStorage.getItem(sessionZeroDraftStorageKey);
 
   if (!stored) {
-    return createInitialSessionZeroDraft(initialCampaignId);
+    return createInitialSessionZeroDraft(initialCampaignId, initialRealmId);
   }
 
   try {
     const parsed = JSON.parse(stored) as Partial<SessionZeroDraft>;
+    const parsedRealmId = parsed.realmId ?? getRealmIdForRace(parsed.raceId ?? "");
+    const nextRealmId = initialRealmId ?? parsedRealmId;
+    const nextRaceId =
+      initialRealmId && parsedRealmId !== initialRealmId ? "" : (parsed.raceId ?? "");
+
     return {
-      ...createInitialSessionZeroDraft(initialCampaignId),
+      ...createInitialSessionZeroDraft(initialCampaignId, initialRealmId),
       ...parsed,
-      realmId: parsed.realmId ?? getRealmIdForRace(parsed.raceId ?? ""),
+      realmId: nextRealmId,
+      raceId: nextRaceId,
       selectedCampaignId: parsed.selectedCampaignId ?? initialCampaignId ?? "",
     };
   } catch {
-    return createInitialSessionZeroDraft(initialCampaignId);
+    return createInitialSessionZeroDraft(initialCampaignId, initialRealmId);
   }
 }
 
@@ -135,14 +142,16 @@ function formatHeightBuildLine(
 
 export function SessionZeroWizard({
   initialCampaignId,
+  initialRealmId,
 }: {
   initialCampaignId?: string;
+  initialRealmId?: string;
 }) {
   const panelBodyRef = useRef<HTMLDivElement | null>(null);
   const primaryVideoRef = useRef<HTMLVideoElement | null>(null);
   const secondaryVideoRef = useRef<HTMLVideoElement | null>(null);
   const [draft, setDraft] = useState<SessionZeroDraft>(() =>
-    createInitialSessionZeroDraft(initialCampaignId),
+    createInitialSessionZeroDraft(initialCampaignId, initialRealmId),
   );
   const [hasRestoredDraft, setHasRestoredDraft] = useState(false);
   const [showBackdropMedia, setShowBackdropMedia] = useState(false);
@@ -154,11 +163,12 @@ export function SessionZeroWizard({
   const [volume, setVolume] = useState(0.55);
   const [audioHint, setAudioHint] = useState("Portal theme active.");
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const isRealmAnchored = Boolean(initialRealmId);
 
   useEffect(() => {
-    setDraft(readStoredDraft(initialCampaignId));
+    setDraft(readStoredDraft(initialCampaignId, initialRealmId));
     setHasRestoredDraft(true);
-  }, [initialCampaignId]);
+  }, [initialCampaignId, initialRealmId]);
 
   useEffect(() => {
     setShowBackdropMedia(true);
@@ -234,6 +244,9 @@ export function SessionZeroWizard({
   const previewHref = `/characters/preview?draft=${encodeURIComponent(
     sessionZeroDraftStorageKey,
   )}&campaign=${encodeURIComponent(draft.selectedCampaignId || initialCampaignId || "")}`;
+  const continueCharacterHref = draft.savedCharacterId
+    ? `/characters/${draft.savedCharacterId}`
+    : "/characters/load";
 
   function updateDraft(patch: Partial<SessionZeroDraft>) {
     setDraft((current) => ({
@@ -354,33 +367,42 @@ export function SessionZeroWizard({
     const selectedBackground = backgroundPresets.find(
       (option) => option.id === draft.backgroundId,
     );
+    const anchoredRealmLabel = getRealmLabel(initialRealmId ?? draft.realmId);
 
     return (
       <>
         <h1 className={styles.stepTitle}>Choose identity</h1>
         <p className={styles.stepSummary}>
-          Pick the world first, then narrow into the race and background that fit your
-          character. This step should feel quick on mobile and richer on desktop.
+          {isRealmAnchored
+            ? `The veil has already opened into ${anchoredRealmLabel}. Now choose the lineage and lived past your traveler carries into that world.`
+            : "Pick the world first, then narrow into the race and background that fit your character. This step should feel quick on mobile and richer on desktop."}
         </p>
 
         <section className={styles.identityLayout}>
           <div className={styles.identityFormCard}>
             <div className={styles.identityStack}>
-              <label className={styles.wideField}>
-                <span className={styles.label}>Realm</span>
-                <select
-                  className={styles.select}
-                  value={draft.realmId}
-                  onChange={(event) => handleRealmChange(event.target.value)}
-                >
-                  <option value="">Choose a world</option>
-                  {realmOptions.map((option) => (
-                    <option key={option.id} value={option.id}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              {isRealmAnchored ? (
+                <div className={styles.wideField}>
+                  <span className={styles.label}>Realm</span>
+                  <div className={styles.lockedField}>{anchoredRealmLabel}</div>
+                </div>
+              ) : (
+                <label className={styles.wideField}>
+                  <span className={styles.label}>Realm</span>
+                  <select
+                    className={styles.select}
+                    value={draft.realmId}
+                    onChange={(event) => handleRealmChange(event.target.value)}
+                  >
+                    <option value="">Choose a world</option>
+                    {realmOptions.map((option) => (
+                      <option key={option.id} value={option.id}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
 
               <label className={styles.wideField}>
                 <span className={styles.label}>Race</span>
@@ -766,25 +788,24 @@ export function SessionZeroWizard({
         <div className={styles.videoLayer}>
           {showBackdropMedia
             ? [0, 1].map((index) => {
-                const active = activeVideoIndex === index;
-                const visible = active || (crossfading && activeVideoIndex !== index);
+              const active = activeVideoIndex === index;
+              const visible = active || (crossfading && activeVideoIndex !== index);
 
-                return (
-                  <video
-                    key={index}
-                    ref={index === 0 ? primaryVideoRef : secondaryVideoRef}
-                    className={`${styles.video} ${
-                      visible ? styles.videoLive : styles.videoIdle
+              return (
+                <video
+                  key={index}
+                  ref={index === 0 ? primaryVideoRef : secondaryVideoRef}
+                  className={`${styles.video} ${visible ? styles.videoLive : styles.videoIdle
                     }`}
-                    autoPlay={index === 0}
-                    muted
-                    playsInline
-                    preload="auto"
-                    onTimeUpdate={() => handleVideoTimeUpdate(index)}
-                    src={portalVideoSrc}
-                  />
-                );
-              })
+                  autoPlay={index === 0}
+                  muted
+                  playsInline
+                  preload="auto"
+                  onTimeUpdate={() => handleVideoTimeUpdate(index)}
+                  src={portalVideoSrc}
+                />
+              );
+            })
             : null}
         </div>
         <div className={styles.shade} />
@@ -804,7 +825,7 @@ export function SessionZeroWizard({
             <Link href="/" className={styles.exitLink}>
               Exit to main screen
             </Link>
-            <Link href="/characters/vale-warden" className={styles.continueLink}>
+            <Link href={continueCharacterHref} className={styles.continueLink}>
               Continue Character
             </Link>
             <div className={styles.soundGroup}>

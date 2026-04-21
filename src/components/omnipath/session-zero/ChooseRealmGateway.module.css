@@ -1,0 +1,243 @@
+.shell {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #040813;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.videoLayer {
+  position: absolute;
+  inset: 0;
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top, rgba(128, 180, 255, 0.12), transparent 28%),
+    radial-gradient(circle at bottom, rgba(232, 188, 106, 0.18), transparent 24%),
+    linear-gradient(180deg, rgba(2, 5, 12, 0.38), rgba(2, 6, 14, 0.82));
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  width: min(100%, calc(100% - 1rem));
+  margin: 0 auto;
+  padding: 0.75rem 0 1rem;
+  display: grid;
+  gap: 0.75rem;
+  min-height: 100vh;
+}
+
+.topBar {
+  padding: 0.65rem 0.75rem;
+}
+
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.5rem 0.85rem;
+}
+
+.returnLink,
+.submitButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.7rem 0.95rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(8, 13, 23, 0.62);
+  color: rgba(238, 244, 250, 0.94);
+  font-weight: 600;
+}
+
+.returnLink:hover,
+.returnLink:focus-visible,
+.submitButton:hover,
+.submitButton:focus-visible {
+  border-color: rgba(248, 212, 143, 0.42);
+  background: rgba(248, 212, 143, 0.12);
+  outline: none;
+}
+
+.pathText {
+  margin: 0;
+  color: rgba(225, 233, 242, 0.72);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+}
+
+.gateway {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  min-height: calc(100svh - 4.75rem);
+  padding: 0.1rem 0 0.35rem;
+  text-align: center;
+  position: relative;
+}
+
+.kicker {
+  margin: 0;
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(248, 212, 143, 0.88);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(2rem, 8vw, 4.1rem);
+  letter-spacing: -0.05em;
+}
+
+.summary {
+  margin: 0;
+  max-width: 30rem;
+  color: rgba(225, 233, 242, 0.88);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.gatewayForm {
+  display: grid;
+  gap: 0.75rem;
+  width: min(22rem, 100%);
+}
+
+.copyBlock {
+  width: min(22rem, 100%);
+  display: grid;
+  justify-items: center;
+  gap: 0.55rem;
+  padding-top: clamp(9rem, 26svh, 13.5rem);
+}
+
+.field,
+.selectionCopy {
+  display: grid;
+  gap: 0.7rem;
+  width: 100%;
+}
+
+.fieldLabel,
+.omen,
+.invitation,
+.placeholderCopy {
+  margin: 0;
+}
+
+.fieldLabel {
+  color: rgba(248, 212, 143, 0.88);
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.select {
+  min-height: 3.5rem;
+  width: 100%;
+  border: 1px solid rgba(241, 214, 161, 0.18);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03)),
+    rgba(10, 15, 27, 0.84);
+  color: rgba(244, 248, 252, 0.96);
+  padding: 0.8rem 0.9rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.submitButton {
+  width: 100%;
+}
+
+.submitButton:disabled {
+  opacity: 0.45;
+}
+
+.selectionCopy {
+  max-width: 30rem;
+}
+
+.omen {
+  color: rgba(248, 212, 143, 0.92);
+  line-height: 1.7;
+}
+
+.invitation,
+.placeholderCopy {
+  color: rgba(225, 233, 242, 0.86);
+  line-height: 1.65;
+}
+
+@media (min-width: 641px) {
+  .content {
+    width: min(980px, calc(100% - 2rem));
+    padding: 1.25rem 0 1.5rem;
+    gap: 1rem;
+  }
+
+  .topBar {
+    padding: 0.9rem 1rem;
+  }
+
+  .crumbs {
+    align-items: center;
+    flex-direction: row;
+    gap: 0.75rem 1rem;
+  }
+
+  .gateway {
+    min-height: calc(100svh - 6rem);
+    padding: 0.15rem 0 0.9rem;
+  }
+
+  .summary {
+    max-width: 34rem;
+    font-size: 0.98rem;
+    line-height: 1.7;
+  }
+
+  .copyBlock {
+    width: min(24rem, 100%);
+    gap: 0.8rem;
+    padding-top: clamp(10.5rem, 30svh, 16rem);
+  }
+
+  .gatewayForm {
+    width: min(24rem, 100%);
+    gap: 0.85rem;
+  }
+
+  .selectionCopy {
+    max-width: 40rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .copyBlock {
+    width: min(26rem, 100%);
+    padding-top: clamp(11rem, 33svh, 17rem);
+  }
+}

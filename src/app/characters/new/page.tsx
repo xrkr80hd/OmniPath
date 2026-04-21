@@ -1,5 +1,5 @@
-import { SessionZeroWizard } from "@/components/omnipath/session-zero/SessionZeroWizard";
+import { ChooseRealmGateway } from "@/components/omnipath/session-zero/ChooseRealmGateway";
 
 export default function CharacterCreationPage() {
-  return <SessionZeroWizard />;
+  return <ChooseRealmGateway />;
 }

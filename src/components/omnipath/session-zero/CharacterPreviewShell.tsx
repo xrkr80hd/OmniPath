@@ -6,8 +6,10 @@ import styles from "./CharacterPreviewShell.module.css";
 
 export function CharacterPreviewShell({
   character,
+  companionHref = "/characters/load",
 }: {
   character: CharacterPreviewData;
+  companionHref?: string;
 }) {
   return (
     <main className={styles.shell}>
@@ -71,7 +73,7 @@ export function CharacterPreviewShell({
             <Link href="/campaigns" className={styles.action}>
               Choose campaign
             </Link>
-            <Link href="/characters/vale-warden" className={styles.action}>
+            <Link href={companionHref} className={styles.action}>
               Open player companion
             </Link>
           </div>

@@ -7,6 +7,7 @@ describe("CharacterPreviewShell", () => {
   it("shows the created character summary instead of the stale companion shortcut", () => {
     render(
       <CharacterPreviewShell
+        companionHref="/characters/ari-vale-1234"
         character={{
           name: "Ari Vale",
           gender: "female",
@@ -40,5 +41,9 @@ describe("CharacterPreviewShell", () => {
     expect(screen.getByText(/weathered bedroll/i)).toBeInTheDocument();
     expect(screen.getByText(/glass harbor/i)).toBeInTheDocument();
     expect(screen.getByText(/portrait of ari vale/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /open player companion/i })).toHaveAttribute(
+      "href",
+      "/characters/ari-vale-1234",
+    );
   });
 });

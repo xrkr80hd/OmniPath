@@ -24,8 +24,24 @@ describe("SessionZeroWizard", () => {
     );
     expect(screen.getByRole("link", { name: /continue character/i })).toHaveAttribute(
       "href",
-      "/characters/vale-warden",
+      "/characters/load",
     );
+  });
+
+  it("anchors the realm when character creation starts from a realm gateway", async () => {
+    const user = userEvent.setup();
+
+    render(<SessionZeroWizard initialRealmId="dnd" />);
+
+    await user.type(screen.getByLabelText(/character name/i), "Ari Vale");
+    await user.click(screen.getByRole("button", { name: /next/i }));
+
+    expect(screen.getByText(/^DND$/i)).toBeInTheDocument();
+    expect(screen.queryByLabelText(/^realm$/i)).not.toBeInTheDocument();
+    expect(screen.getByRole("option", { name: /human/i })).toBeInTheDocument();
+    expect(
+      screen.queryByRole("option", { name: /ork runner/i }),
+    ).not.toBeInTheDocument();
   });
 
   it("autosaves draft progress and unlocks the next step after entering basics", async () => {
@@ -190,7 +206,7 @@ describe("SessionZeroWizard", () => {
     container.innerHTML = serverMarkup;
     document.body.appendChild(container);
 
-    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => { });
 
     hydrateRoot(container, <SessionZeroWizard />);
 
